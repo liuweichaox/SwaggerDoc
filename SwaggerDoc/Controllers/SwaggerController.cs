@@ -27,6 +27,10 @@ namespace SwaggerDoc.Controllers
             stopwatch.Start();
             var md = swaggerHelper.GeneratorMarkDown();
             var file = Path.Combine(environment.ContentRootPath, "Swagger.md");
+            if (System.IO.File.Exists(file))
+            {
+                System.IO.File.Delete(file);
+            }
             using var fileStream = new FileStream(file, FileMode.OpenOrCreate);
             using var sw = new StreamWriter(fileStream);
             await sw.WriteLineAsync(md);

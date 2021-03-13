@@ -92,7 +92,7 @@ namespace SwaggerDoc
                     row.AppendLine(responseExapmle.Code());
                 }
                 if (string.IsNullOrWhiteSpace(row.ToString()) == false)
-                    markDown.AppendLine(row.ToString().Br().NewLine());
+                    markDown.AppendLine(row.ToString().Br());
             }
             return markDown.ToString();
         }
