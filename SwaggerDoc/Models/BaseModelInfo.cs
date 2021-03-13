@@ -20,28 +20,6 @@ namespace SwaggerDoc.Models
         public string 描述 { get; set; }
     }
 
-    /// <summary>
-    /// RequestModelInfo
-    /// </summary>
-    public class RequestModelInfo : BaseModelInfo
-    {
-        /// <summary>
-        /// 是否必传
-        /// </summary>
-        public bool 是否必传 { get; set; }
-    }
-    /// <summary>
-    /// ResponseModelInfo
-    /// </summary>
-    public class ResponseModelInfo : BaseModelInfo
-    {
 
-    }
-    /// <summary>
-    /// ModelExample
-    /// </summary>
-    public class ModelExample : Dictionary<string, object>
-    {
 
-    }
 }

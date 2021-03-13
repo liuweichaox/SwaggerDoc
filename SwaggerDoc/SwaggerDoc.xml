@@ -14,41 +14,6 @@
             API文档导出
             </summary>
         </member>
-        <member name="T:SwaggerDoc.Models.BaseModelInfo">
-            <summary>
-            Model
-            </summary>
-        </member>
-        <member name="P:SwaggerDoc.Models.BaseModelInfo.参数类型">
-            <summary>
-            参数类型
-            </summary>
-        </member>
-        <member name="P:SwaggerDoc.Models.BaseModelInfo.描述">
-            <summary>
-            描述
-            </summary>
-        </member>
-        <member name="T:SwaggerDoc.Models.RequestModelInfo">
-            <summary>
-            RequestModelInfo
-            </summary>
-        </member>
-        <member name="P:SwaggerDoc.Models.RequestModelInfo.是否必传">
-            <summary>
-            是否必传
-            </summary>
-        </member>
-        <member name="T:SwaggerDoc.Models.ResponseModelInfo">
-            <summary>
-            ResponseModelInfo
-            </summary>
-        </member>
-        <member name="T:SwaggerDoc.Models.ModelExample">
-            <summary>
-            ModelExample
-            </summary>
-        </member>
         <member name="T:SwaggerDoc.SwaggerHelper">
             <summary>
             Swagger
@@ -65,6 +30,41 @@
             生成MarkDown
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:SwaggerDoc.Models.BaseModelInfo">
+            <summary>
+            Model
+            </summary>
+        </member>
+        <member name="P:SwaggerDoc.Models.BaseModelInfo.参数类型">
+            <summary>
+            参数类型
+            </summary>
+        </member>
+        <member name="P:SwaggerDoc.Models.BaseModelInfo.描述">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="T:SwaggerDoc.Models.ModelExample">
+            <summary>
+            ModelExample
+            </summary>
+        </member>
+        <member name="T:SwaggerDoc.Models.RequestModelInfo">
+            <summary>
+            RequestModelInfo
+            </summary>
+        </member>
+        <member name="P:SwaggerDoc.Models.RequestModelInfo.是否必传">
+            <summary>
+            是否必传
+            </summary>
+        </member>
+        <member name="T:SwaggerDoc.Models.ResponseModelInfo">
+            <summary>
+            ResponseModelInfo
+            </summary>
         </member>
     </members>
 </doc>

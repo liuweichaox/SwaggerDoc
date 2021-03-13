@@ -26,7 +26,7 @@ namespace SwaggerDoc.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             var md = swaggerHelper.GeneratorMarkDown();
-            var file = Path.Combine(environment.ContentRootPath, "Swagger.txt");
+            var file = Path.Combine(environment.ContentRootPath, "Swagger.md");
             using var fileStream = new FileStream(file, FileMode.OpenOrCreate);
             using var sw = new StreamWriter(fileStream);
             await sw.WriteLineAsync(md);
