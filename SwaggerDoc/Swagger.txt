@@ -1,0 +1,401 @@
+# SwaggerDoc
+> Sky API文档第一版
+## API文档导出
+### 基本信息
+- **接口地址：**/api/Swagger
+- **请求方式：**Get
+<br/>
+
+## /api/Values1
+### 基本信息
+- **接口地址：**/api/Values1
+- **请求方式：**Get
+### ResponseSchema
+```json
+"string"
+```
+
+### ResponseBody
+```json
+[
+    "string"
+]
+```
+
+<br/>
+
+## /api/Values1/{id}
+### 基本信息
+- **接口地址：**/api/Values1/{id}
+- **请求方式：**Get
+### Query
+|参数名称|参数类型|描述|
+|:----:|:----:|:----:|
+|id|integer||
+
+### ResponseSchema
+```json
+"string"
+```
+
+### ResponseBody
+```json
+"string"
+```
+
+<br/>
+
+## /api/Values2
+### 基本信息
+- **接口地址：**/api/Values2
+- **请求方式：**Get
+### ResponseSchema
+```json
+"string"
+```
+
+### ResponseBody
+```json
+[
+    "string"
+]
+```
+
+<br/>
+
+## /api/Values2/{id}
+### 基本信息
+- **接口地址：**/api/Values2/{id}
+- **请求方式：**Get
+### Query
+|参数名称|参数类型|描述|
+|:----:|:----:|:----:|
+|id|integer||
+
+### ResponseSchema
+```json
+"string"
+```
+
+### ResponseBody
+```json
+"string"
+```
+
+<br/>
+
+
+ Post方法测试
+### 基本信息
+- **接口地址：**/WeatherForecast/PostAction
+- **请求方式：**Post
+- **请求类型：**application/json
+### Query
+|参数名称|参数类型|描述|
+|:----:|:----:|:----:|
+|token|string|token令牌|
+|code|integer|状态|
+
+### RequestSchema
+```json
+{
+    "address": {
+        "是否必传": true,
+        "参数类型": "string",
+        "描述": "地址"
+    },
+    "stmp": {
+        "是否必传": false,
+        "参数类型": "string",
+        "描述": "Stmp"
+    },
+    "emailType": {
+        "是否必传": false,
+        "参数类型": "EmailType",
+        "描述": null
+    },
+    "money": {
+        "是否必传": false,
+        "参数类型": "double",
+        "描述": "Money XML"
+    },
+    "num": {
+        "是否必传": true,
+        "参数类型": "int32",
+        "描述": "Num XML"
+    },
+    "stream": {
+        "是否必传": false,
+        "参数类型": {
+            "canRead": {
+                "是否必传": false,
+                "参数类型": "boolean",
+                "描述": null
+            },
+            "canSeek": {
+                "是否必传": false,
+                "参数类型": "boolean",
+                "描述": null
+            },
+            "canTimeout": {
+                "是否必传": false,
+                "参数类型": "boolean",
+                "描述": null
+            },
+            "canWrite": {
+                "是否必传": false,
+                "参数类型": "boolean",
+                "描述": null
+            },
+            "length": {
+                "是否必传": false,
+                "参数类型": "int64",
+                "描述": null
+            },
+            "position": {
+                "是否必传": false,
+                "参数类型": "int64",
+                "描述": null
+            },
+            "readTimeout": {
+                "是否必传": false,
+                "参数类型": "int32",
+                "描述": null
+            },
+            "writeTimeout": {
+                "是否必传": false,
+                "参数类型": "int32",
+                "描述": null
+            }
+        },
+        "描述": null
+    },
+    "bytes": {
+        "是否必传": false,
+        "参数类型": "byte",
+        "描述": "Bytes XML"
+    },
+    "sNum": {
+        "是否必传": false,
+        "参数类型": "int32",
+        "描述": "SNum XML"
+    },
+    "longNum": {
+        "是否必传": false,
+        "参数类型": "int64",
+        "描述": "LongNume XML"
+    },
+    "unitNum": {
+        "是否必传": false,
+        "参数类型": "int32",
+        "描述": "UnitNum"
+    },
+    "obj": {
+        "是否必传": false,
+        "参数类型": "object",
+        "描述": "Obj XML"
+    },
+    "fNum": {
+        "是否必传": false,
+        "参数类型": "float",
+        "描述": "FNum XML"
+    },
+    "isFlag": {
+        "是否必传": false,
+        "参数类型": "boolean",
+        "描述": "Flag XML"
+    }
+}
+```
+
+### RequestBody
+```json
+{
+    "address": "string",
+    "stmp": "string",
+    "emailType": 0,
+    "money": 0,
+    "num": 0,
+    "stream": {
+        "canRead": false,
+        "canSeek": false,
+        "canTimeout": false,
+        "canWrite": false,
+        "length": 0,
+        "position": 0,
+        "readTimeout": 0,
+        "writeTimeout": 0
+    },
+    "bytes": 0,
+    "sNum": 0,
+    "longNum": 0,
+    "unitNum": 0,
+    "obj": null,
+    "fNum": 0,
+    "isFlag": false
+}
+```
+
+### ResponseSchema
+```json
+{
+    "statusCode": {
+        "参数类型": "int32",
+        "描述": "状态码"
+    },
+    "message": {
+        "参数类型": "string",
+        "描述": "错误消息"
+    },
+    "data": {
+        "参数类型": {
+            "age": {
+                "参数类型": "int32",
+                "描述": "年龄"
+            },
+            "name": {
+                "参数类型": "string",
+                "描述": "名字"
+            },
+            "emails": {
+                "参数类型": {
+                    "address": {
+                        "参数类型": "string",
+                        "描述": "地址"
+                    },
+                    "stmp": {
+                        "参数类型": "string",
+                        "描述": "Stmp"
+                    },
+                    "emailType": {
+                        "参数类型": "EmailType",
+                        "描述": null
+                    },
+                    "money": {
+                        "参数类型": "double",
+                        "描述": "Money XML"
+                    },
+                    "num": {
+                        "参数类型": "int32",
+                        "描述": "Num XML"
+                    },
+                    "stream": {
+                        "参数类型": {
+                            "canRead": {
+                                "参数类型": "boolean",
+                                "描述": null
+                            },
+                            "canSeek": {
+                                "参数类型": "boolean",
+                                "描述": null
+                            },
+                            "canTimeout": {
+                                "参数类型": "boolean",
+                                "描述": null
+                            },
+                            "canWrite": {
+                                "参数类型": "boolean",
+                                "描述": null
+                            },
+                            "length": {
+                                "参数类型": "int64",
+                                "描述": null
+                            },
+                            "position": {
+                                "参数类型": "int64",
+                                "描述": null
+                            },
+                            "readTimeout": {
+                                "参数类型": "int32",
+                                "描述": null
+                            },
+                            "writeTimeout": {
+                                "参数类型": "int32",
+                                "描述": null
+                            }
+                        },
+                        "描述": null
+                    },
+                    "bytes": {
+                        "参数类型": "byte",
+                        "描述": "Bytes XML"
+                    },
+                    "sNum": {
+                        "参数类型": "int32",
+                        "描述": "SNum XML"
+                    },
+                    "longNum": {
+                        "参数类型": "int64",
+                        "描述": "LongNume XML"
+                    },
+                    "unitNum": {
+                        "参数类型": "int32",
+                        "描述": "UnitNum"
+                    },
+                    "obj": {
+                        "参数类型": "object",
+                        "描述": "Obj XML"
+                    },
+                    "fNum": {
+                        "参数类型": "float",
+                        "描述": "FNum XML"
+                    },
+                    "isFlag": {
+                        "参数类型": "boolean",
+                        "描述": "Flag XML"
+                    }
+                },
+                "描述": "邮箱"
+            },
+            "createTime": {
+                "参数类型": "date-time",
+                "描述": "创建时间"
+            }
+        },
+        "描述": null
+    }
+}
+```
+
+### ResponseBody
+```json
+{
+    "statusCode": 0,
+    "message": "string",
+    "data": {
+        "age": 0,
+        "name": "string",
+        "emails": [
+            {
+                "address": "string",
+                "stmp": "string",
+                "emailType": 0,
+                "money": 0,
+                "num": 0,
+                "stream": {
+                    "canRead": false,
+                    "canSeek": false,
+                    "canTimeout": false,
+                    "canWrite": false,
+                    "length": 0,
+                    "position": 0,
+                    "readTimeout": 0,
+                    "writeTimeout": 0
+                },
+                "bytes": 0,
+                "sNum": 0,
+                "longNum": 0,
+                "unitNum": 0,
+                "obj": null,
+                "fNum": 0,
+                "isFlag": false
+            }
+        ],
+        "createTime": "2021-03-13T20:42:49.9384078+08:00"
+    }
+}
+```
+
+<br/>
+
+
