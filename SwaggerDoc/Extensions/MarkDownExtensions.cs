@@ -13,8 +13,8 @@ namespace SwaggerDoc
         public static string H4(this string s) => $"#### {s}";
         public static string H5(this string s) => $"##### {s}";
         public static string H6(this string s) => $"###### {s}";
-        public static string B(this string s) => $"**{s}**";
-        public static string I(this string s) => $"*{s}*";
+        public static string B(this string s) => $"** {s} **";
+        public static string I(this string s) => $"* {s} *";
         public static string Li(this string s) => $"- {s}";
         public static string Ref1(this string s) => $"> {s}";
         public static string Ref2(this string s) => $">> {s}";
