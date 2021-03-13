@@ -59,12 +59,12 @@ namespace SwaggerDoc
                 var (requestExapmle, requestSchema) = GetRequestBody(operation.RequestBody);
                 var (responseExapmle, responseSchema) = GetResponses(operation.Responses);
                 row.AppendLine(title.H2());//接口名称
-                row.AppendLine("基本信息".H3());//基本信息
-                row.AppendLine($"{"接口地址：".B()}{url}".Li());
-                row.AppendLine($"{"请求方式：".B()}{httpMethod}".Li());
+                row.AppendLine("基本信息".H3().NewLine());//基本信息
+                row.AppendLine($"{"接口地址：".B()}{url}".Li().NewLine());
+                row.AppendLine($"{"请求方式：".B()}{httpMethod}".Li().NewLine());
                 if (httpMethod == "Post" || httpMethod == "Put")
                 {
-                    row.AppendLine($"{"请求类型：".B()}{contentType}".Li());
+                    row.AppendLine($"{"请求类型：".B()}{contentType}".Li().NewLine());
                 }
                 if (string.IsNullOrWhiteSpace(query) == false)//Query
                 {
