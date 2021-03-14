@@ -33,6 +33,7 @@ namespace Samples
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API 示例文档", Version = "v1",Description="API文档全部由代码自动生成" });
+                c.IncludeXmlComments("Samples.xml");
             });
         }
 
