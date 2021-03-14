@@ -64,6 +64,6 @@ public class SwaggerController : ControllerBase
 
 我是用的是 [typora](https://www.typora.io/) 编辑器，下载 [pandoc](https://github.com/jgm/pandoc/releases) 插件可以实现Marddown格式转换为PDF功能（免费）
 
-如果需要样式调整，可以去https://theme.typora.io/选选
+如果需要样式调整，可以去https://theme.typora.io/ 选选
 
 ![ToPDF.png](https://github.com/lwc1st/SwaggerDoc/blob/master/Doc/ToPDF.png?raw=true)
