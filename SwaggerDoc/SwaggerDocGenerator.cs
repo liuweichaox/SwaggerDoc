@@ -1,47 +1,46 @@
 ﻿using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using SwaggerDoc.Controllers;
+using SwaggerDoc.Extensions;
 using SwaggerDoc.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SwaggerDoc
+namespace SwaggerDoc.Helpers
 {
     /// <summary>
-    /// Swagger
+    /// SwaggerDocGenerator
     /// </summary>
-    public class SwaggerHelper
+    public class SwaggerDocGenerator : ISwaggerDocGenerator
     {
         private readonly SwaggerGenerator _generator;
         private IDictionary<string, OpenApiSchema> Schemas;
         const string contentType = "application/json";
         /// <summary>
-        /// SwaggerHelper
+        /// SwaggerDocGenerator
         /// </summary>
         /// <param name="swagger"></param>
-        public SwaggerHelper(SwaggerGenerator swagger)
+        public SwaggerDocGenerator(SwaggerGenerator swagger)
         {
             _generator = swagger;
         }
-
         /// <summary>
         /// 生成MarkDown
         /// </summary>
         /// <returns></returns>
-        public string GeneratorMarkDown()
+        public string GetSwaggerDoc(string name)
         {
-            var document = _generator.GetSwagger("v1");
-            Schemas = document.Components.Schemas;
-            var markDown = new StringBuilder();
+            if (string.IsNullOrEmpty(name))
+                throw new Exception("name is null !");
+            var document = _generator.GetSwagger(name);
             if (document == null)
                 throw new Exception("swagger is null !");
+            Schemas = document.Components.Schemas;
+            var markDown = new StringBuilder();
             markDown.AppendLine(document?.Info?.Title.H1());//文档标题
             markDown.AppendLine(document?.Info?.Description.Ref1());//文档描述
 
@@ -134,8 +133,8 @@ namespace SwaggerDoc
             if (body != null && body.Content.ContainsKey(contentType))
             {
                 var schema = body.Content[contentType].Schema;
-                exampleJson += ToJson(GetExapmple(schema));
-                schemaJson += ToJson(GetModelInfo(schema, (id) => GetModelTProc(id)));
+                exampleJson += GetExapmple(schema).ToJson();
+                schemaJson += GetModelInfo(schema, (id) => GetModelTProc(id)).ToJson();
             }
             return (exampleJson, schemaJson);
         }
@@ -146,8 +145,8 @@ namespace SwaggerDoc
             if (body != null && body["200"].Content.ContainsKey(contentType))
             {
                 var schema = body["200"].Content[contentType].Schema;
-                exampleJson += ToJson(GetExapmple(schema));
-                schemaJson += ToJson(GetModelInfo(schema, (id) => GetModelTProc(id, false)));
+                exampleJson += GetExapmple(schema).ToJson();
+                schemaJson += GetModelInfo(schema, (id) => GetModelTProc(id, false)).ToJson();
             }
             return (exampleJson, schemaJson);
         }
@@ -286,33 +285,6 @@ namespace SwaggerDoc
         {
             return Assembly.GetExecutingAssembly();
         }
-        private string ToJson(object obj)
-        {
-            return ConvertJsonString(JsonConvert.SerializeObject(obj));
-        }
-        private string ConvertJsonString(string str)
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            TextReader tr = new StringReader(str);
-            JsonTextReader jtr = new JsonTextReader(tr);
-            object obj = serializer.Deserialize(jtr);
-            if (obj != null)
-            {
-                StringWriter textWriter = new StringWriter();
-                JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
-                {
-                    Formatting = Formatting.Indented,
-                    Indentation = 4,
-                    IndentChar = ' '
-                };
-                serializer.Serialize(jsonWriter, obj);
-                return textWriter.ToString();
-            }
-            else
-            {
-                return str;
-            }
-        }
         private bool Valid<T>(string name)
         {
             var types = GetAssembly().GetTypes().Where(x => x.Name.EndsWith("Controller") && x.IsDefined(typeof(T))).Select(x => x.Name).ToArray();
@@ -331,6 +303,5 @@ namespace SwaggerDoc
                 return DateTime.Now;
             return null;
         }
-
     }
 }

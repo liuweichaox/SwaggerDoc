@@ -7,14 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using SwaggerDoc.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SwaggerDoc
+namespace Samples
 {
     public class Startup
     {
@@ -28,13 +27,12 @@ namespace SwaggerDoc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<SwaggerHelper>();
-            services.AddScoped<SwaggerGenerator>();
+
             services.AddControllers();
+            services.AddSwaggerDoc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SwaggerDoc", Version = "v1", Description = "Sky APIÎÄµµµÚÒ»°æ" });
-                c.IncludeXmlComments("SwaggerDoc.XML");
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Samples", Version = "v1" });
             });
         }
 
@@ -45,10 +43,7 @@ namespace SwaggerDoc
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SwaggerDoc v1");
-                });
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Samples v1"));
             }
 
             app.UseHttpsRedirection();

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SwaggerDoc
+namespace SwaggerDoc.Extensions
 {
+    /// <summary>
+    /// MarkDownExtensions
+    /// </summary>
     public static class MarkDownExtensions
     {
         public static string H1(this string s) => $"# {s}";

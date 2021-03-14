@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SwaggerDoc.Controllers
@@ -21,17 +17,17 @@ namespace SwaggerDoc.Controllers
         /// API文档导出
         /// </summary>
         [HttpGet]
-        public async Task<object> Export([FromServices] SwaggerHelper swaggerHelper, [FromServices] IWebHostEnvironment environment)
+        public async Task<object> Export([FromServices] ISwaggerDocGenerator swaggerDocGenerator, [FromServices] IWebHostEnvironment environment)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            var md = swaggerHelper.GeneratorMarkDown();
+            var md = swaggerDocGenerator.GetSwaggerDoc("v1");
             var file = Path.Combine(environment.ContentRootPath, "Swagger.md");
             if (System.IO.File.Exists(file))
             {
                 System.IO.File.Delete(file);
             }
-            using var fileStream = new FileStream(file, FileMode.OpenOrCreate);
+           using var fileStream = new FileStream(file, FileMode.OpenOrCreate);
             using var sw = new StreamWriter(fileStream);
             await sw.WriteLineAsync(md);
             stopwatch.Stop();
