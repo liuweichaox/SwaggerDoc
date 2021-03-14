@@ -67,7 +67,3 @@ public class SwaggerController : ControllerBase
 如果需要样式调整，可以去https://theme.typora.io/选选
 
 ![ToPDF.png](https://github.com/lwc1st/SwaggerDoc/blob/master/Doc/ToPDF.png?raw=true)
-
-## 完整项目示例
-
-地址（可以直接运行）： https://github.com/lwc1st/SwaggerDoc
