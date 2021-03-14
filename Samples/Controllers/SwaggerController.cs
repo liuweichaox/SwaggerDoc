@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,7 +11,7 @@ namespace SwaggerDoc.Controllers
     /// <summary>
     /// SwaggerController
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class SwaggerController : ControllerBase
     {
@@ -17,21 +19,17 @@ namespace SwaggerDoc.Controllers
         /// API文档导出
         /// </summary>
         [HttpGet]
-        public async Task<object> Export([FromServices] ISwaggerDocGenerator swaggerDocGenerator, [FromServices] IWebHostEnvironment environment)
+        public async Task<IActionResult> SwaggerDoc([FromServices] ISwaggerDocGenerator swaggerDocGenerator, [FromServices] IWebHostEnvironment environment)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            var md = swaggerDocGenerator.GetSwaggerDoc("v1");
-            var file = Path.Combine(environment.ContentRootPath, "Swagger.md");
-            if (System.IO.File.Exists(file))
-            {
-                System.IO.File.Delete(file);
-            }
-           using var fileStream = new FileStream(file, FileMode.OpenOrCreate);
-            using var sw = new StreamWriter(fileStream);
-            await sw.WriteLineAsync(md);
+            var stream = await swaggerDocGenerator.GetSwaggerDocStreamAsync("v1");
             stopwatch.Stop();
-            return Ok("Swagger文档导出成功，耗时" + stopwatch.ElapsedMilliseconds + "ms");
+            var log = "Swagger文档导出成功，耗时" + stopwatch.ElapsedMilliseconds + "ms";
+            Debug.WriteLine(log);
+            var mime = "application/octet-stream";
+            var name = "SwaggerDoc.md";
+            return File(stream.ToArray(), mime,name);
         }
     }
 }

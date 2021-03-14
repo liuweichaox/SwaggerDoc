@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SwaggerDoc.Helpers
 {
@@ -302,6 +303,15 @@ namespace SwaggerDoc.Helpers
             if (type == "date-time")
                 return DateTime.Now;
             return null;
+        }
+
+        public async Task<MemoryStream> GetSwaggerDocStreamAsync(string name)
+        {
+            using var stream = new MemoryStream();
+            using var sw = new StreamWriter(stream);
+            var content = GetSwaggerDoc(name);
+            await sw.WriteLineAsync(content);
+            return stream;
         }
     }
 }
