@@ -195,7 +195,10 @@ namespace SwaggerDoc.Helpers
                         if (item.Value.Reference != null && Schemas.FirstOrDefault(x => x.Key == item.Value.Reference.Id).Value.Enum.Count == 0)
                         {
                             var objKey = item.Value.Reference.Id;
-                            exapmle.Add(item.Key, GetModelExample(objKey));
+                            if (objKey == key)
+                                exapmle.Add(item.Key, null);
+                            else
+                                exapmle.Add(item.Key, GetModelExample(objKey));
                         }
                         else if (item.Value.Items != null)
                         {
@@ -249,7 +252,10 @@ namespace SwaggerDoc.Helpers
                             if (item.Value.Reference != null && Schemas.FirstOrDefault(x => x.Key == item.Value.Reference.Id).Value.Enum.Count == 0)
                             {
                                 var objKey = item.Value.Reference.Id;
-                                obj = GetModelTProc(objKey, isShowRequired);
+                                if (objKey == key)
+                                    obj = objKey;
+                                else
+                                    obj = GetModelTProc(objKey, isShowRequired);
 
                             }
                             else if (item.Value.Items != null)
