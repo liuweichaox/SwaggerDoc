@@ -48,80 +48,65 @@ namespace SwaggerDoc.Helpers
                 throw new Exception("name is null !");
             var document = _generator.GetSwagger(name);
             if (document == null)
-                throw new Exception("swagger is null !");
+                throw new Exception("document is null !");
+            if (document.Paths?.Any() != true)
+                throw new Exception("Paths is null !");
+            if (document.Components?.Schemas?.Any() != true)
+                throw new Exception("Schemas is null !");
             Schemas = document.Components.Schemas;
             var markDown = new StringBuilder();
             markDown.AppendLine(document?.Info?.Title.H());//文档标题
             markDown.AppendLine(document?.Info?.Description.Ref());//文档描述
-
             foreach (var path in document.Paths)
             {
-                var openApiPath = path.Value;
-                var (flag, method, operation) = GetApiOperation(openApiPath);
-                if (flag == false)
-                    continue;
-                var row = new StringBuilder();
-                var url = path.Key;
-                var title = operation.Summary ?? url;
-                var httpMethod = method;
-                var query = GetParameters(operation.Parameters);
-                var (requestExapmle, requestSchema) = GetRequestBody(operation.RequestBody);
-                var (responseExapmle, responseSchema) = GetResponses(operation.Responses);
-                row.AppendLine(title.H(2));//接口名称
-                row.AppendLine("基本信息".H(3).NewLine());//基本信息
-                row.AppendLine($"{"接口地址：".B()}{url}".Li().NewLine());
-                row.AppendLine($"{"请求方式：".B()}{httpMethod}".Li().NewLine());
-                if (httpMethod == "Post" || httpMethod == "Put")
+                foreach (var operationItem in path.Value.Operations)
                 {
-                    row.AppendLine($"{"请求类型：".B()}{contentType}".Li().NewLine());
+                    var operation = operationItem.Value;
+                    var method = operationItem.Key.ToString();
+                    var row = new StringBuilder();
+                    var url = path.Key;
+                    var title = operation.Summary ?? url;
+                    var query = GetParameters(operation.Parameters);
+                    var (requestExapmle, requestSchema) = GetRequestBody(operation.RequestBody);
+                    var (responseExapmle, responseSchema) = GetResponses(operation.Responses);
+                    row.AppendLine(title.H(2));//接口名称
+                    row.AppendLine("基本信息".H(3).NewLine());//基本信息
+                    row.AppendLine($"{"接口地址：".B()}{url}".Li().NewLine());
+                    row.AppendLine($"{"请求方式：".B()}{method}".Li().NewLine());
+                    if (method == "Post" || method == "Put")
+                    {
+                        row.AppendLine($"{"请求类型：".B()}{contentType}".Li().NewLine());
+                    }
+                    if (string.IsNullOrWhiteSpace(query) == false)//Query
+                    {
+                        row.AppendLine("Parameters".H(3));
+                        row.AppendLine(query);
+                    }
+                    if (string.IsNullOrWhiteSpace(requestSchema) == false)//RequestSchema
+                    {
+                        row.AppendLine("RequestSchema".H(3));
+                        row.AppendLine(requestSchema.Code());
+                    }
+                    if (string.IsNullOrWhiteSpace(requestExapmle) == false)//RequestBody
+                    {
+                        row.AppendLine("RequestBody Example".H(3));
+                        row.AppendLine(requestExapmle.Code());
+                    }
+                    if (string.IsNullOrWhiteSpace(responseSchema) == false)//ResponseSchema
+                    {
+                        row.AppendLine("ResponseSchema".H(3));
+                        row.AppendLine(responseSchema.Code());
+                    }
+                    if (string.IsNullOrWhiteSpace(responseExapmle) == false)//ResponseBody
+                    {
+                        row.AppendLine("ResponseBody Example".H(3));
+                        row.AppendLine(responseExapmle.Code());
+                    }
+                    if (string.IsNullOrWhiteSpace(row.ToString()) == false)
+                        markDown.AppendLine(row.ToString().Br());
                 }
-                if (string.IsNullOrWhiteSpace(query) == false)//Query
-                {
-                    row.AppendLine("Parameters".H(3));
-                    row.AppendLine(query);
-                }
-                if (string.IsNullOrWhiteSpace(requestSchema) == false)//RequestSchema
-                {
-                    row.AppendLine("RequestSchema".H(3));
-                    row.AppendLine(requestSchema.Code());
-                }
-                if (string.IsNullOrWhiteSpace(requestExapmle) == false)//RequestBody
-                {
-                    row.AppendLine("RequestBody Example".H(3));
-                    row.AppendLine(requestExapmle.Code());
-                }
-                if (string.IsNullOrWhiteSpace(responseSchema) == false)//ResponseSchema
-                {
-                    row.AppendLine("ResponseSchema".H(3));
-                    row.AppendLine(responseSchema.Code());
-                }
-                if (string.IsNullOrWhiteSpace(responseExapmle) == false)//ResponseBody
-                {
-                    row.AppendLine("ResponseBody Example".H(3));
-                    row.AppendLine(responseExapmle.Code());
-                }
-                if (string.IsNullOrWhiteSpace(row.ToString()) == false)
-                    markDown.AppendLine(row.ToString().Br());
             }
             return markDown.ToString();
-        }
-        private (bool isSuccesss, string method, OpenApiOperation openApiOperation) GetApiOperation(OpenApiPathItem openApiPathItem)
-        {
-            var operations = openApiPathItem.Operations;
-            OpenApiOperation operation;
-            OperationType? operationType = null;
-            if (operations.ContainsKey(OperationType.Get))
-                operationType = OperationType.Get;
-            else if (operations.ContainsKey(OperationType.Post))
-                operationType = OperationType.Post;
-            else if (operations.ContainsKey(OperationType.Put))
-                operationType = OperationType.Put;
-            else if (operations.ContainsKey(OperationType.Patch))
-                operationType = OperationType.Patch;
-            else if (operations.ContainsKey(OperationType.Delete))
-                operationType = OperationType.Delete;
-            var flag = operations.TryGetValue(operationType.Value, out operation);
-            return (flag, operationType.Value.ToString(), operation);
         }
         private string GetParameters(IList<OpenApiParameter> apiParameters)
         {
