@@ -129,13 +129,11 @@ namespace SwaggerDoc
         /// <returns></returns>
         private (string exampleJson, string schemaJson) GetRequestBody(OpenApiRequestBody body)
         {
+            if (body == null || body.Content.ContainsKey(contentType) == false) return (null, null);
             string exampleJson = null, schemaJson = null;
-            if (body != null && body.Content.ContainsKey(contentType))
-            {
-                var schema = body.Content[contentType].Schema;
-                exampleJson += GetExapmple(schema).ToJson();
-                schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id)).ToJson();
-            }
+            var schema = body.Content[contentType].Schema;
+            exampleJson += GetExapmple(schema).ToJson();
+            schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id)).ToJson();
             return (exampleJson, schemaJson);
         }
         /// <summary>
@@ -145,13 +143,11 @@ namespace SwaggerDoc
         /// <returns></returns>
         private (string exampleJson, string schemaJson) GetResponses(OpenApiResponses body)
         {
+            if (body == null || body["200"].Content.ContainsKey(contentType) == false) return (null, null);
             string exampleJson = null, schemaJson = null;
-            if (body != null && body["200"].Content.ContainsKey(contentType))
-            {
-                var schema = body["200"].Content[contentType].Schema;
-                exampleJson += GetExapmple(schema).ToJson();
-                schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id, false)).ToJson();
-            }
+            var schema = body["200"].Content[contentType].Schema;
+            exampleJson += GetExapmple(schema).ToJson();
+            schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id, false)).ToJson();
             return (exampleJson, schemaJson);
         }
         /// <summary>
@@ -212,41 +208,36 @@ namespace SwaggerDoc
         /// <returns></returns>
         private object GetExapmple(string key)
         {
-            if (key != null && Schemas.ContainsKey(key))
+            if (key == null || Schemas.ContainsKey(key) == false) return null;
+            var schema = Schemas.SingleOrDefault(x => x.Key == key).Value;
+            if (schema.Properties.Any() == false) return null;
+            var exapmle = new ModelExample();
+            foreach (var item in schema.Properties)
             {
-                var schema = Schemas.FirstOrDefault(x => x.Key == key).Value;
-                var exapmle = new ModelExample();
-                if (schema.Properties.Any())
+                if (item.Value.IsObject(Schemas))
                 {
-                    foreach (var item in schema.Properties)
-                    {
-                        if (item.Value.IsObject(Schemas))
-                        {
-                            var objKey = item.Value.Reference.Id;
-                            if (objKey == key)
-                                exapmle.Add(item.Key, null);
-                            else
-                                exapmle.Add(item.Key, GetExapmple(objKey));
-                        }
-                        else if (item.Value.IsArray())
-                        {
-                            if (item.Value.IsBaseTypeArray())
-                                exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Type) });
-                            else
-                                exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Reference.Id) });
-                        }
-                        else
-                        {
-                            if (item.Value.IsEnum(Schemas))
-                                exapmle.Add(item.Key, GetEnumValues(item.Value.Reference.Id).Min());
-                            else
-                                exapmle.Add(item.Key, GetDefaultValue(item.Value.Format ?? item.Value.Type));
-                        }
-                    }
+                    var objKey = item.Value.Reference.Id;
+                    if (objKey == key)
+                        exapmle.Add(item.Key, null);
+                    else
+                        exapmle.Add(item.Key, GetExapmple(objKey));
                 }
-                return exapmle;
+                else if (item.Value.IsArray())
+                {
+                    if (item.Value.IsBaseTypeArray())
+                        exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Type) });
+                    else
+                        exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Reference.Id) });
+                }
+                else
+                {
+                    if (item.Value.IsEnum(Schemas))
+                        exapmle.Add(item.Key, GetEnumValues(item.Value.Reference.Id).Min());
+                    else
+                        exapmle.Add(item.Key, GetDefaultValue(item.Value.Format ?? item.Value.Type));
+                }
             }
-            return null;
+            return exapmle;
         }
 
 
@@ -278,95 +269,78 @@ namespace SwaggerDoc
         /// <returns></returns>
         private object GetModelInfo(string key, bool isShowRequired = true)
         {
-            if (key != null)
-            {
-                if (Schemas.ContainsKey(key))
+            if (key == null) return null;
+            if (key != null && Schemas.ContainsKey(key) == false) return key;
+            var schema = Schemas.SingleOrDefault(x => x.Key == key).Value;
+            if (schema.Properties.Any() == false)
+                return new EnumInfo()
                 {
-                    var schema = Schemas.FirstOrDefault(x => x.Key == key).Value;
-                    object info = null;
-                    if (schema.Properties.Any())
-                    {
-                        var properties = new Dictionary<string, object>();
-                        foreach (var item in schema.Properties)
-                        {
-                            object obj = "object";
-                            if (item.Value.IsObject(Schemas))
-                            {
-                                var objKey = item.Value.Reference.Id;
-                                if (objKey == key)
-                                    obj = objKey;
-                                else
-                                    obj = GetModelInfo(objKey, isShowRequired);
-                            }
-                            else if (item.Value.IsArray())
-                            {
-                                var arrayKey = "";
-                                if (item.Value.IsBaseTypeArray())
-                                    arrayKey = item.Value.Items.Type;
-                                else
-                                    arrayKey = item.Value.Items.Reference.Id;
-                                obj = new[] { GetModelInfo(arrayKey, isShowRequired) };
-                            }
-                            else if (item.Value.IsEnum(Schemas))
-                            {
-                                var enumKey = item.Value.Reference.Id;
-                                var enumObj = GetEnumSchema(enumKey);
-                                obj = new EnumInfo()
-                                {
-                                    枚举范围 = GetEnumValues(enumKey),
-                                    枚举类型 = enumObj.Format,
-                                    枚举名称 = enumKey,
-                                    枚举描述 = enumObj.Description
-                                };
-                            }
-                            else
-                            {
-                                obj = item.Value.Format ?? item.Value.Type;
-                            }
-
-
-                            if (isShowRequired)
-                            {
-                                var requestModelInfo = new RequestModelInfo
-                                {
-                                    参数类型 = obj,
-                                    描述 = item.Value.Description,
-                                    是否必传 = schema.Required.Any(x => x == item.Key),
-                                    可空类型 = item.Value.Nullable
-                                };
-                                properties.Add(item.Key, requestModelInfo);
-                            }
-                            else
-                            {
-                                var responseModelInfo = new ResponseModelInfo
-                                {
-                                    参数类型 = obj,
-                                    描述 = item.Value.Description,
-                                    可空类型 = item.Value.Nullable
-                                };
-                                properties.Add(item.Key, responseModelInfo);
-                            }
-                        }
-                        info = properties;
-                    }
+                    枚举范围 = GetEnumValues(key),
+                    枚举描述 = schema.Description,
+                    枚举类型 = schema.Format,
+                    枚举名称 = key
+                };
+            var properties = new Dictionary<string, object>();
+            foreach (var item in schema.Properties)
+            {
+                object obj = "object";
+                if (item.Value.IsObject(Schemas))
+                {
+                    var objKey = item.Value.Reference.Id;
+                    if (objKey == key)
+                        obj = objKey;
                     else
+                        obj = GetModelInfo(objKey, isShowRequired);
+                }
+                else if (item.Value.IsArray())
+                {
+                    var arrayKey = "";
+                    if (item.Value.IsBaseTypeArray())
+                        arrayKey = item.Value.Items.Type;
+                    else
+                        arrayKey = item.Value.Items.Reference.Id;
+                    obj = new[] { GetModelInfo(arrayKey, isShowRequired) };
+                }
+                else if (item.Value.IsEnum(Schemas))
+                {
+                    var enumKey = item.Value.Reference.Id;
+                    var enumObj = GetEnumSchema(enumKey);
+                    obj = new EnumInfo()
                     {
-                        info = new EnumInfo()
-                        {
-                            枚举范围 = GetEnumValues(key),
-                            枚举描述 = schema.Description,
-                            枚举类型 = schema.Format,
-                            枚举名称 = key
-                        };
-                    }
-                    return info;
+                        枚举范围 = GetEnumValues(enumKey),
+                        枚举类型 = enumObj.Format,
+                        枚举名称 = enumKey,
+                        枚举描述 = enumObj.Description
+                    };
                 }
                 else
                 {
-                    return key;
+                    obj = item.Value.Format ?? item.Value.Type;
+                }
+
+                if (isShowRequired)
+                {
+                    var requestModelInfo = new RequestModelInfo
+                    {
+                        参数类型 = obj,
+                        描述 = item.Value.Description,
+                        是否必传 = schema.Required.Any(x => x == item.Key),
+                        可空类型 = item.Value.Nullable
+                    };
+                    properties.Add(item.Key, requestModelInfo);
+                }
+                else
+                {
+                    var responseModelInfo = new ResponseModelInfo
+                    {
+                        参数类型 = obj,
+                        描述 = item.Value.Description,
+                        可空类型 = item.Value.Nullable
+                    };
+                    properties.Add(item.Key, responseModelInfo);
                 }
             }
-            return null;
+            return properties;
         }
         /// <summary>
         /// 获取类型默认值
@@ -376,14 +350,10 @@ namespace SwaggerDoc
         private object GetDefaultValue(string type)
         {
             var number = new string[] { "byte", "decimal", "double", "enum", "float", "int32", "int64", "sbyte", "short", "uint", "ulong", "ushort" };
-            if (number.Any(x => type == x))
-                return 0;
-            if (type == "string")
-                return "string";
-            if (type == "bool" || type == "boolean")
-                return false;
-            if (type == "date-time")
-                return DateTime.Now;
+            if (number.Any(x => type == x)) return 0;
+            if (type == "string") return "string";
+            if (type == "bool" || type == "boolean") return false;
+            if (type == "date-time") return DateTime.Now;
             return null;
         }
         /// <summary>
