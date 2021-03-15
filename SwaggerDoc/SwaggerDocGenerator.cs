@@ -270,7 +270,8 @@ namespace SwaggerDoc.Helpers
                                 {
                                     参数类型 = obj,
                                     描述 = item.Value.Description,
-                                    是否必传 = schema.Required.Any(x => x == item.Key)
+                                    是否必传 = schema.Required.Any(x => x == item.Key),
+                                    可空类型 = item.Value.Nullable
                                 };
                                 info.Add(item.Key, requestModelInfo);
                             }
@@ -279,7 +280,8 @@ namespace SwaggerDoc.Helpers
                                 var responseModelInfo = new ResponseModelInfo
                                 {
                                     参数类型 = obj,
-                                    描述 = item.Value.Description
+                                    描述 = item.Value.Description,
+                                    可空类型 = item.Value.Nullable
                                 };
                                 info.Add(item.Key, responseModelInfo);
                             }
