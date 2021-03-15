@@ -11,15 +11,14 @@ namespace SwaggerDoc.Controllers
     /// <summary>
     /// SwaggerController
     /// </summary>
-    [Route("api/[controller]/[action]")]
     [ApiController]
     public class SwaggerController : ControllerBase
     {
         /// <summary>
         /// API文档导出
         /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> SwaggerDoc([FromServices] ISwaggerDocGenerator swaggerDocGenerator, [FromServices] IWebHostEnvironment environment)
+        [HttpGet("/doc")]
+        public async Task<IActionResult> Doc([FromServices] ISwaggerDocGenerator swaggerDocGenerator, [FromServices] IWebHostEnvironment environment)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -29,7 +28,7 @@ namespace SwaggerDoc.Controllers
             Debug.WriteLine(log);
             var mime = "application/octet-stream";
             var name = "SwaggerDoc.md";
-            return File(stream.ToArray(), mime,name);
+            return File(stream.ToArray(), mime, name);
         }
     }
 }

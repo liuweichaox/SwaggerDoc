@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Samples</name>
+    </assembly>
+    <members>
+        <member name="T:SwaggerDoc.Controllers.SwaggerController">
+            <summary>
+            SwaggerController
+            </summary>
+        </member>
+        <member name="M:SwaggerDoc.Controllers.SwaggerController.Doc(SwaggerDoc.ISwaggerDocGenerator,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            API文档导出
+            </summary>
+        </member>
+    </members>
+</doc>
