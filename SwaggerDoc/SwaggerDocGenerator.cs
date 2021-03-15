@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using SwaggerDoc.Extensions;
 using SwaggerDoc.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -163,7 +164,7 @@ namespace SwaggerDoc
             object exapmle = null;
             if (apiSchema.IsObject(Schemas))
             {
-                var key = apiSchema?.Reference?.Id;
+                var key = apiSchema.Reference.Id;
                 exapmle = GetExapmple(key);
             }
             else if (apiSchema.IsArray())
@@ -173,12 +174,18 @@ namespace SwaggerDoc
                 else
                     exapmle = new[] { GetExapmple(apiSchema.Items.Reference.Id) };
             }
+            else if (apiSchema.IsEnum(Schemas))
+            {
+                var key = apiSchema.Reference.Id;
+                exapmle = Schemas.SingleOrDefault(x => x.Key == key).Value.Enum.Select(x => ((OpenApiInteger)x).Value).Min();
+            }
             else
             {
-                exapmle = GetDefaultValue(apiSchema.Type ?? apiSchema.Reference.Id);
+                exapmle = GetDefaultValue(apiSchema.Type);
             }
             return exapmle;
         }
+
         /// <summary>
         /// 递归获取 Body 示例
         /// </summary>
@@ -212,7 +219,7 @@ namespace SwaggerDoc
                         else
                         {
                             if (item.Value.IsEnum(Schemas))
-                                exapmle.Add(item.Key, 0);
+                                exapmle.Add(item.Key, Schemas.SingleOrDefault(x => x.Key == item.Key).Value.Enum.Select(x => ((OpenApiInteger)x).Value).Min());
                             else
                                 exapmle.Add(item.Key, GetDefaultValue(item.Value.Format ?? item.Value.Type));
                         }
@@ -222,6 +229,7 @@ namespace SwaggerDoc
             }
             return null;
         }
+
 
         /// <summary>
         /// 获取 Body 参数说明
@@ -233,8 +241,8 @@ namespace SwaggerDoc
         {
             object info = null;
             var key = "";
-            if (apiSchema.IsObject(Schemas))
-                key = apiSchema?.Reference?.Id;
+            if (apiSchema.IsObject(Schemas)||apiSchema.IsEnum(Schemas))
+                key = apiSchema.Reference.Id;
             else if (apiSchema.IsArray())
                 key = apiSchema.Items.Type ?? apiSchema.Items.Reference.Id;
             else if (apiSchema.IsBaseType())
@@ -279,10 +287,16 @@ namespace SwaggerDoc
                                     arrayKey = item.Value.Items.Reference.Id;
                                 obj = new[] { GetModelInfo(arrayKey, isShowRequired) };
                             }
-                            else
+                            else if (item.Value.IsEnum(Schemas))
                             {
-                                if (item.Value.IsEnum(Schemas))
-                                    obj = item.Value.Reference.Id;
+                                var openApis = Schemas.SingleOrDefault(x => x.Key == item.Key).Value.Enum.Select(x => ((OpenApiInteger)x));
+                                var enums = openApis.Select(x => x.Value).ToArray();
+                                obj = new EnumInfo()
+                                {
+                                    枚举值 = enums,
+                                    枚举值类型 = item.Key,
+                                    枚举类型 = item.Value.Type
+                                };
                             }
                             if (isShowRequired)
                             {
