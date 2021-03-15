@@ -77,27 +77,27 @@ namespace SwaggerDoc.Helpers
                 }
                 if (string.IsNullOrWhiteSpace(query) == false)//Query
                 {
-                    row.AppendLine("Query".H(3));
+                    row.AppendLine("Parameters".H(3));
                     row.AppendLine(query);
                 }
                 if (string.IsNullOrWhiteSpace(requestSchema) == false)//RequestSchema
                 {
-                    row.AppendLine("RequestSchema".H(3));
+                    row.AppendLine("请求参数说明".H(3));
                     row.AppendLine(requestSchema.Code());
                 }
                 if (string.IsNullOrWhiteSpace(requestExapmle) == false)//RequestBody
                 {
-                    row.AppendLine("RequestBody".H(3));
+                    row.AppendLine("请求参数示例".H(3));
                     row.AppendLine(requestExapmle.Code());
                 }
                 if (string.IsNullOrWhiteSpace(responseSchema) == false)//ResponseSchema
                 {
-                    row.AppendLine("ResponseSchema".H(3));
+                    row.AppendLine("响应参数说明".H(3));
                     row.AppendLine(responseSchema.Code());
                 }
                 if (string.IsNullOrWhiteSpace(responseExapmle) == false)//ResponseBody
                 {
-                    row.AppendLine("ResponseBody".H(3));
+                    row.AppendLine("响应参数示例".H(3));
                     row.AppendLine(responseExapmle.Code());
                 }
                 if (string.IsNullOrWhiteSpace(row.ToString()) == false)
@@ -129,9 +129,9 @@ namespace SwaggerDoc.Helpers
             var isFirst = true;
             foreach (var parameter in apiParameters)
             {
-                var queryTitle = "|参数名称|参数类型|描述|".NewLine();
-                queryTitle += "|:----:|:----:|:----:|".NewLine();
-                var queryStr = $"|{parameter.Name}|{parameter.Schema.Type}|{parameter.Description}|".NewLine();
+                var queryTitle = "|参数名称|参数类型|参数位置|描述|".NewLine();
+                queryTitle += "|:----:|:----:|:----:|:----:|".NewLine();
+                var queryStr = $"|{parameter.Name}|{parameter.Schema.Type}|{parameter.In}|{parameter.Description}|".NewLine();
                 str += isFirst ? $"{queryTitle}{queryStr}" : queryStr;
                 isFirst = false;
             }
