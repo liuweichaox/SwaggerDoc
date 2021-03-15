@@ -82,22 +82,22 @@ namespace SwaggerDoc.Helpers
                 }
                 if (string.IsNullOrWhiteSpace(requestSchema) == false)//RequestSchema
                 {
-                    row.AppendLine("请求参数说明".H(3));
+                    row.AppendLine("RequestSchema".H(3));
                     row.AppendLine(requestSchema.Code());
                 }
                 if (string.IsNullOrWhiteSpace(requestExapmle) == false)//RequestBody
                 {
-                    row.AppendLine("请求参数示例".H(3));
+                    row.AppendLine("RequestBody Example".H(3));
                     row.AppendLine(requestExapmle.Code());
                 }
                 if (string.IsNullOrWhiteSpace(responseSchema) == false)//ResponseSchema
                 {
-                    row.AppendLine("响应参数说明".H(3));
+                    row.AppendLine("ResponseSchema".H(3));
                     row.AppendLine(responseSchema.Code());
                 }
                 if (string.IsNullOrWhiteSpace(responseExapmle) == false)//ResponseBody
                 {
-                    row.AppendLine("响应参数示例".H(3));
+                    row.AppendLine("ResponseBody Example".H(3));
                     row.AppendLine(responseExapmle.Code());
                 }
                 if (string.IsNullOrWhiteSpace(row.ToString()) == false)
