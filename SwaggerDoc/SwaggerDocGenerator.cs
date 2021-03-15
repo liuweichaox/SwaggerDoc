@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using SwaggerDoc.Extensions;
 using SwaggerDoc.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -7,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -163,18 +161,17 @@ namespace SwaggerDoc.Helpers
         private object GetExapmple(OpenApiSchema apiSchema)
         {
             object exapmle = null;
-            if (apiSchema.Type == null && apiSchema.Reference != null)//object
+            if (apiSchema.IsObject(Schemas))
             {
                 var key = apiSchema?.Reference?.Id;
                 exapmle = GetExapmple(key);
             }
-            else if (apiSchema.Type == "array" && apiSchema.Items != null)//array
+            else if (apiSchema.IsArray())//array
             {
-                var key = apiSchema?.Items?.Reference?.Id;
-                if (key != null)
-                    exapmle = new[] { GetExapmple(key) };
-                else if (key == null && apiSchema.Items.Type != null)
+                if (apiSchema.IsBaseTypeArray())
                     exapmle = new[] { GetDefaultValue(apiSchema.Items.Type) };
+                else
+                    exapmle = new[] { GetExapmple(apiSchema.Items.Reference.Id) };
             }
             else
             {
@@ -197,7 +194,7 @@ namespace SwaggerDoc.Helpers
                 {
                     foreach (var item in schema.Properties)
                     {
-                        if (item.Value.Reference != null && Schemas.FirstOrDefault(x => x.Key == item.Value.Reference.Id).Value.Enum.Count == 0)
+                        if (item.Value.IsObject(Schemas))
                         {
                             var objKey = item.Value.Reference.Id;
                             if (objKey == key)
@@ -205,17 +202,16 @@ namespace SwaggerDoc.Helpers
                             else
                                 exapmle.Add(item.Key, GetExapmple(objKey));
                         }
-                        else if (item.Value.Items != null)
+                        else if (item.Value.IsArray())
                         {
-                            var arrayKey = item.Value?.Items?.Reference?.Id;
-                            if (arrayKey != null)
-                                exapmle.Add(item.Key, new[] { GetExapmple(arrayKey) });
-                            else if (item.Value.Items.Type != null)
+                            if (item.Value.IsBaseTypeArray())
                                 exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Type) });
+                            else
+                                exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Reference.Id) });
                         }
                         else
                         {
-                            if (item.Value.Reference != null && Schemas.FirstOrDefault(x => x.Key == item.Value.Reference.Id).Value.Enum.Count != 0)
+                            if (item.Value.IsEnum(Schemas))
                                 exapmle.Add(item.Key, 0);
                             else
                                 exapmle.Add(item.Key, GetDefaultValue(item.Value.Format ?? item.Value.Type));
@@ -237,11 +233,11 @@ namespace SwaggerDoc.Helpers
         {
             object info = null;
             var key = "";
-            if (apiSchema.Type == null && apiSchema.Reference != null)//object
+            if (apiSchema.IsObject(Schemas))
                 key = apiSchema?.Reference?.Id;
-            else if (apiSchema.Type == "array" && apiSchema.Items != null)//array
+            else if (apiSchema.IsArray())
                 key = apiSchema?.Items?.Reference?.Id ?? apiSchema.Items.Type;
-            else if (apiSchema.Type != null)
+            else if (apiSchema.IsBaseType())
                 key = apiSchema.Type;
             if (key != null)
                 info = func(key);
@@ -266,7 +262,7 @@ namespace SwaggerDoc.Helpers
                         foreach (var item in schema.Properties)
                         {
                             object obj = item.Value.Format ?? item.Value.Type ?? "object";
-                            if (item.Value.Reference != null && Schemas.FirstOrDefault(x => x.Key == item.Value.Reference.Id).Value.Enum.Count == 0)
+                            if (item.Value.IsObject(Schemas))
                             {
                                 var objKey = item.Value.Reference.Id;
                                 if (objKey == key)
@@ -275,16 +271,18 @@ namespace SwaggerDoc.Helpers
                                     obj = GetModelInfo(objKey, isShowRequired);
 
                             }
-                            else if (item.Value.Items != null)
+                            else if (item.Value.IsArray())
                             {
-                                var arrayKey = item.Value?.Items?.Reference?.Id;
-                                if (item.Value.Items.Type != null && arrayKey == null)
+                                var arrayKey = "";
+                                if (item.Value.IsBaseTypeArray())
                                     arrayKey = item.Value.Items.Type;
+                                else
+                                    arrayKey = item.Value.Items.Reference.Id;
                                 obj = GetModelInfo(arrayKey, isShowRequired);
                             }
                             else
                             {
-                                if (item.Value.Reference != null && Schemas.FirstOrDefault(x => x.Key == item.Value.Reference.Id).Value.Enum.Count != 0)
+                                if (item.Value.IsEnum(Schemas))
                                     obj = item.Value.Reference.Id;
                             }
                             if (isShowRequired)

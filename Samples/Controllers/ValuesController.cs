@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Samples.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,22 +9,15 @@ using System.Threading.Tasks;
 
 namespace Samples.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ValuesController : ControllerBase
-    {
-        // GET: api/<ValuesController>
+    { 
+        
         [HttpGet]
-        public IEnumerable<string> Get()
+        public StatusType Get(int id, StatusType type)
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            return StatusType.Success;
         }
 
         // POST api/<ValuesController>

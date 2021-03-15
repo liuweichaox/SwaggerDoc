@@ -14,5 +14,20 @@
             API文档导出
             </summary>
         </member>
+        <member name="T:Samples.Models.StatusType">
+            <summary>
+            Status Type
+            </summary>
+        </member>
+        <member name="F:Samples.Models.StatusType.Success">
+            <summary>
+            Success
+            </summary>
+        </member>
+        <member name="F:Samples.Models.StatusType.Error">
+            <summary>
+            Error
+            </summary>
+        </member>
     </members>
 </doc>
