@@ -49,10 +49,6 @@ namespace SwaggerDoc.Helpers
             var document = _generator.GetSwagger(name);
             if (document == null)
                 throw new Exception("document is null !");
-            if (document.Paths?.Any() != true)
-                throw new Exception("Paths is null !");
-            if (document.Components?.Schemas?.Any() != true)
-                throw new Exception("Schemas is null !");
             Schemas = document.Components.Schemas;
             var markDown = new StringBuilder();
             markDown.AppendLine(document?.Info?.Title.H());//文档标题
