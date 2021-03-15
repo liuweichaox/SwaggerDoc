@@ -199,8 +199,11 @@ namespace SwaggerDoc.Helpers
                         }
                         else if (item.Value.Items != null)
                         {
-                            var arrayKey = item.Value.Items.Reference.Id;
-                            exapmle.Add(item.Key, new[] { GetModelExample(arrayKey) });
+                            var arrayKey = item.Value?.Items?.Reference?.Id;
+                            if (arrayKey != null)
+                                exapmle.Add(item.Key, new[] { GetModelExample(arrayKey) });
+                            else if (item.Value.Items.Type != null)
+                                exapmle.Add(item.Key, new[] { GetModelExample(item.Value.Items.Type) });
                         }
                         else
                         {
@@ -251,8 +254,12 @@ namespace SwaggerDoc.Helpers
                             }
                             else if (item.Value.Items != null)
                             {
-                                var arrayKey = item.Value.Items.Reference.Id;
+                                var arrayKey = item.Value?.Items?.Reference?.Id;
+                                if (item.Value.Items.Type != null && arrayKey == null)
+                                    arrayKey = item.Value.Items.Type;
                                 obj = GetModelTProc(arrayKey, isShowRequired);
+
+
                             }
                             else
                             {
