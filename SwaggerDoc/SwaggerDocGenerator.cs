@@ -277,7 +277,7 @@ namespace SwaggerDoc
                                     arrayKey = item.Value.Items.Type;
                                 else
                                     arrayKey = item.Value.Items.Reference.Id;
-                                obj = GetModelInfo(arrayKey, isShowRequired);
+                                obj = new[] { GetModelInfo(arrayKey, isShowRequired) };
                             }
                             else
                             {
