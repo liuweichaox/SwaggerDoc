@@ -12,7 +12,17 @@ namespace SwaggerDoc
     /// </summary>
     public interface ISwaggerDocGenerator
     {
+        /// <summary>
+        /// 获取Swagger流文件
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         Task<MemoryStream> GetSwaggerDocStreamAsync(string name);
+        /// <summary>
+        /// 获取Swagger MarkDown源代码
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         string GetSwaggerDoc(string name);
     }
 }

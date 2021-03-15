@@ -258,8 +258,6 @@ namespace SwaggerDoc.Helpers
                                 if (item.Value.Items.Type != null && arrayKey == null)
                                     arrayKey = item.Value.Items.Type;
                                 obj = GetModelTProc(arrayKey, isShowRequired);
-
-
                             }
                             else
                             {
@@ -285,7 +283,6 @@ namespace SwaggerDoc.Helpers
                                 };
                                 info.Add(item.Key, responseModelInfo);
                             }
-
                         }
                     }
                     return info;
