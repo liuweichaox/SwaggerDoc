@@ -14,6 +14,26 @@
             API文档导出
             </summary>
         </member>
+        <member name="P:Samples.Models.Input.StatusType">
+            <summary>
+             Status Type XML
+            </summary>
+        </member>
+        <member name="P:Samples.Models.Input.Code">
+            <summary>
+             Code XML
+            </summary>
+        </member>
+        <member name="P:Samples.Models.Output.StatusType">
+            <summary>
+            Status Type XML
+            </summary>
+        </member>
+        <member name="P:Samples.Models.Output.Message">
+            <summary>
+            消息
+            </summary>
+        </member>
         <member name="T:Samples.Models.StatusType">
             <summary>
             Status Type

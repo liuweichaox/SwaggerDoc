@@ -12,12 +12,12 @@ namespace Samples.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ValuesController : ControllerBase
-    { 
-        
+    {
+
         [HttpGet]
-        public StatusType Get(int id, StatusType type)
+        public Output Get(int id, Input input)
         {
-            return StatusType.Success;
+            return new Output();
         }
 
         // POST api/<ValuesController>

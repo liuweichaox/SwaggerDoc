@@ -177,7 +177,7 @@ namespace SwaggerDoc
             else if (apiSchema.IsEnum(Schemas))
             {
                 var key = apiSchema.Reference.Id;
-                exapmle = Schemas.SingleOrDefault(x => x.Key == key).Value.Enum.Select(x => ((OpenApiInteger)x).Value).Min();
+                exapmle = GetEnum(key).Select(x => x.Value).Min();
             }
             else
             {
@@ -185,6 +185,25 @@ namespace SwaggerDoc
             }
             return exapmle;
         }
+
+        /// <summary>
+        /// 获取枚举的值
+        /// </summary>
+        /// <param name="enumType"></param>
+        /// <returns></returns>
+        private int[] GetEnumValues(string enumType) => GetEnum(enumType).Select(x => x.Value).ToArray();
+        /// <summary>
+        /// 获取枚举
+        /// </summary>
+        /// <param name="enumType"></param>
+        /// <returns></returns>
+        private IEnumerable<OpenApiInteger> GetEnum(string enumType) => GetEnumSchema(enumType).Enum.Select(x => ((OpenApiInteger)x));
+        /// <summary>
+        /// 获取枚举Schema
+        /// </summary>
+        /// <param name="enumType"></param>
+        /// <returns></returns>
+        private OpenApiSchema GetEnumSchema(string enumType) => Schemas.SingleOrDefault(x => x.Key == enumType).Value;
 
         /// <summary>
         /// 递归获取 Body 示例
@@ -219,7 +238,7 @@ namespace SwaggerDoc
                         else
                         {
                             if (item.Value.IsEnum(Schemas))
-                                exapmle.Add(item.Key, Schemas.SingleOrDefault(x => x.Key == item.Key).Value.Enum.Select(x => ((OpenApiInteger)x).Value).Min());
+                                exapmle.Add(item.Key, GetEnumValues(item.Value.Reference.Id).Min());
                             else
                                 exapmle.Add(item.Key, GetDefaultValue(item.Value.Format ?? item.Value.Type));
                         }
@@ -264,12 +283,13 @@ namespace SwaggerDoc
                 if (Schemas.ContainsKey(key))
                 {
                     var schema = Schemas.FirstOrDefault(x => x.Key == key).Value;
-                    var info = new Dictionary<string, object>();
+                    object info = null;
                     if (schema.Properties.Any())
                     {
+                        var properties = new Dictionary<string, object>();
                         foreach (var item in schema.Properties)
                         {
-                            object obj = item.Value.Format ?? item.Value.Type ?? "object";
+                            object obj ="object";
                             if (item.Value.IsObject(Schemas))
                             {
                                 var objKey = item.Value.Reference.Id;
@@ -289,13 +309,14 @@ namespace SwaggerDoc
                             }
                             else if (item.Value.IsEnum(Schemas))
                             {
-                                var openApis = Schemas.SingleOrDefault(x => x.Key == item.Key).Value.Enum.Select(x => ((OpenApiInteger)x));
-                                var enums = openApis.Select(x => x.Value).ToArray();
+                                var enumKey = item.Value.Reference.Id;
+                                var enumObj = GetEnumSchema(enumKey);
                                 obj = new EnumInfo()
                                 {
-                                    枚举值 = enums,
-                                    枚举值类型 = item.Key,
-                                    枚举类型 = item.Value.Type
+                                    枚举范围 = GetEnumValues(enumKey),
+                                    枚举类型 = enumObj.Format,
+                                    枚举名称 = enumKey,
+                                    枚举描述 = enumObj.Description
                                 };
                             }
                             if (isShowRequired)
@@ -307,7 +328,7 @@ namespace SwaggerDoc
                                     是否必传 = schema.Required.Any(x => x == item.Key),
                                     可空类型 = item.Value.Nullable
                                 };
-                                info.Add(item.Key, requestModelInfo);
+                                properties.Add(item.Key, requestModelInfo);
                             }
                             else
                             {
@@ -317,21 +338,20 @@ namespace SwaggerDoc
                                     描述 = item.Value.Description,
                                     可空类型 = item.Value.Nullable
                                 };
-                                info.Add(item.Key, responseModelInfo);
+                                properties.Add(item.Key, responseModelInfo);
                             }
                         }
+                        info = properties;
                     }
                     else
                     {
-                        var openApis = Schemas.SingleOrDefault(x => x.Key == key).Value.Enum.Select(x => ((OpenApiInteger)x));
-                        var enums = openApis.Select(x => x.Value).ToArray();
-                        var enumInfo = new EnumInfo()
+                        info = new EnumInfo()
                         {
-                            枚举值 = enums,
-                            枚举值类型 = key,
-                            枚举类型 = schema.Type
+                            枚举范围 = GetEnumValues(key),
+                            枚举描述 = schema.Description,
+                            枚举类型 = schema.Format,
+                            枚举名称 = key
                         };
-                        info.Add(key, enumInfo);
                     }
                     return info;
                 }
