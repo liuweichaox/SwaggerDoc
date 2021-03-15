@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SwaggerDoc.Helpers
+namespace SwaggerDoc
 {
     /// <summary>
     /// SwaggerDocGenerator
