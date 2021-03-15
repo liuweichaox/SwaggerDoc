@@ -18,7 +18,7 @@ namespace SwaggerDoc.Extensions
         public static string H6(this string s) => $"###### {s}";
         public static string B(this string s) => $"**{s}**";
         public static string I(this string s) => $"*{s}*";
-        public static string Li(this string s) => $"- {s}";
+        public static string Li(this string s, int len = 0) => $"{string.Join("", Enumerable.Range(0, len).Select(x => " "))}- {s}";
         public static string Ref1(this string s) => $"> {s}";
         public static string Ref2(this string s) => $">> {s}";
         public static string Ref3(this string s) => $">>> {s}";

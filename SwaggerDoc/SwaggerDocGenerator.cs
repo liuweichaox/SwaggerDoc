@@ -18,8 +18,17 @@ namespace SwaggerDoc.Helpers
     /// </summary>
     public class SwaggerDocGenerator : ISwaggerDocGenerator
     {
+        /// <summary>
+        /// SwaggerGenerator
+        /// </summary>
         private readonly SwaggerGenerator _generator;
+        /// <summary>
+        /// Schemas
+        /// </summary>
         private IDictionary<string, OpenApiSchema> Schemas;
+        /// <summary>
+        /// contentType
+        /// </summary>
         const string contentType = "application/json";
         /// <summary>
         /// SwaggerDocGenerator
@@ -280,16 +289,6 @@ namespace SwaggerDoc.Helpers
                 }
             }
             return null;
-        }
-
-        private Assembly GetAssembly()
-        {
-            return Assembly.GetExecutingAssembly();
-        }
-        private bool Valid<T>(string name)
-        {
-            var types = GetAssembly().GetTypes().Where(x => x.Name.EndsWith("Controller") && x.IsDefined(typeof(T))).Select(x => x.Name).ToArray();
-            return types.Any(x => x.ToLower().Contains(name.ToUpper()));
         }
         private object GetDefaultValue(string type)
         {
