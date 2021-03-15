@@ -78,7 +78,7 @@ namespace SwaggerDoc
                     }
                     if (string.IsNullOrWhiteSpace(requestSchema) == false)//RequestSchema
                     {
-                        row.AppendLine("RequestSchema".H(3));
+                        row.AppendLine("Request Schema".H(3));
                         row.AppendLine(requestSchema.Code());
                     }
                     if (string.IsNullOrWhiteSpace(requestExapmle) == false)//RequestBody
@@ -88,7 +88,7 @@ namespace SwaggerDoc
                     }
                     if (string.IsNullOrWhiteSpace(responseSchema) == false)//ResponseSchema
                     {
-                        row.AppendLine("ResponseSchema".H(3));
+                        row.AppendLine("Response Schema".H(3));
                         row.AppendLine(responseSchema.Code());
                     }
                     if (string.IsNullOrWhiteSpace(responseExapmle) == false)//ResponseBody
