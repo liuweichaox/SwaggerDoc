@@ -51,8 +51,8 @@ namespace SwaggerDoc.Helpers
                 throw new Exception("swagger is null !");
             Schemas = document.Components.Schemas;
             var markDown = new StringBuilder();
-            markDown.AppendLine(document?.Info?.Title.H1());//文档标题
-            markDown.AppendLine(document?.Info?.Description.Ref1());//文档描述
+            markDown.AppendLine(document?.Info?.Title.H());//文档标题
+            markDown.AppendLine(document?.Info?.Description.Ref());//文档描述
 
             foreach (var path in document.Paths)
             {
@@ -67,8 +67,8 @@ namespace SwaggerDoc.Helpers
                 var query = GetParameters(operation.Parameters);
                 var (requestExapmle, requestSchema) = GetRequestBody(operation.RequestBody);
                 var (responseExapmle, responseSchema) = GetResponses(operation.Responses);
-                row.AppendLine(title.H2());//接口名称
-                row.AppendLine("基本信息".H3().NewLine());//基本信息
+                row.AppendLine(title.H(2));//接口名称
+                row.AppendLine("基本信息".H(3).NewLine());//基本信息
                 row.AppendLine($"{"接口地址：".B()}{url}".Li().NewLine());
                 row.AppendLine($"{"请求方式：".B()}{httpMethod}".Li().NewLine());
                 if (httpMethod == "Post" || httpMethod == "Put")
@@ -77,27 +77,27 @@ namespace SwaggerDoc.Helpers
                 }
                 if (string.IsNullOrWhiteSpace(query) == false)//Query
                 {
-                    row.AppendLine("Query".H3());
+                    row.AppendLine("Query".H(3));
                     row.AppendLine(query);
                 }
                 if (string.IsNullOrWhiteSpace(requestSchema) == false)//RequestSchema
                 {
-                    row.AppendLine("RequestSchema".H3());
+                    row.AppendLine("RequestSchema".H(3));
                     row.AppendLine(requestSchema.Code());
                 }
                 if (string.IsNullOrWhiteSpace(requestExapmle) == false)//RequestBody
                 {
-                    row.AppendLine("RequestBody".H3());
+                    row.AppendLine("RequestBody".H(3));
                     row.AppendLine(requestExapmle.Code());
                 }
                 if (string.IsNullOrWhiteSpace(responseSchema) == false)//ResponseSchema
                 {
-                    row.AppendLine("ResponseSchema".H3());
+                    row.AppendLine("ResponseSchema".H(3));
                     row.AppendLine(responseSchema.Code());
                 }
                 if (string.IsNullOrWhiteSpace(responseExapmle) == false)//ResponseBody
                 {
-                    row.AppendLine("ResponseBody".H3());
+                    row.AppendLine("ResponseBody".H(3));
                     row.AppendLine(responseExapmle.Code());
                 }
                 if (string.IsNullOrWhiteSpace(row.ToString()) == false)

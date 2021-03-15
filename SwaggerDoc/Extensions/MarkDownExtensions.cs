@@ -10,18 +10,11 @@ namespace SwaggerDoc.Extensions
     /// </summary>
     public static class MarkDownExtensions
     {
-        public static string H1(this string s) => $"# {s}";
-        public static string H2(this string s) => $"## {s}";
-        public static string H3(this string s) => $"### {s}";
-        public static string H4(this string s) => $"#### {s}";
-        public static string H5(this string s) => $"##### {s}";
-        public static string H6(this string s) => $"###### {s}";
+        public static string H(this string s, int len = 1) => $"{(len <= 6 && len > 0 ? string.Join("", Enumerable.Range(0, len).Select(x => "#")) : "#")} {s}";
         public static string B(this string s) => $"**{s}**";
         public static string I(this string s) => $"*{s}*";
         public static string Li(this string s, int len = 0) => $"{string.Join("", Enumerable.Range(0, len).Select(x => " "))}- {s}";
-        public static string Ref1(this string s) => $"> {s}";
-        public static string Ref2(this string s) => $">> {s}";
-        public static string Ref3(this string s) => $">>> {s}";
+        public static string Ref(this string s,int len=1) => $"{(len <= 3 && len > 0 ? string.Join("", Enumerable.Range(0, len).Select(x => ">")) : ">")} {s}";
         public static string Line(this string s) => $"***";
         public static string NewLine(this string s) => $"{s}{Environment.NewLine}";
         public static string Link(this string name, string url, string title = "") => $"[{name}]({url},{title})";
