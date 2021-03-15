@@ -166,7 +166,7 @@ namespace SwaggerDoc.Helpers
                 var key = apiSchema?.Reference?.Id;
                 exapmle = GetExapmple(key);
             }
-            else if (apiSchema.IsArray())//array
+            else if (apiSchema.IsArray())
             {
                 if (apiSchema.IsBaseTypeArray())
                     exapmle = new[] { GetDefaultValue(apiSchema.Items.Type) };
@@ -269,7 +269,6 @@ namespace SwaggerDoc.Helpers
                                     obj = objKey;
                                 else
                                     obj = GetModelInfo(objKey, isShowRequired);
-
                             }
                             else if (item.Value.IsArray())
                             {
