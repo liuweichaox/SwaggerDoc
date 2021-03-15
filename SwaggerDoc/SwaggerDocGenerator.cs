@@ -241,7 +241,7 @@ namespace SwaggerDoc
         {
             object info = null;
             var key = "";
-            if (apiSchema.IsObject(Schemas)||apiSchema.IsEnum(Schemas))
+            if (apiSchema.IsObject(Schemas) || apiSchema.IsEnum(Schemas))
                 key = apiSchema.Reference.Id;
             else if (apiSchema.IsArray())
                 key = apiSchema.Items.Type ?? apiSchema.Items.Reference.Id;
@@ -320,6 +320,18 @@ namespace SwaggerDoc
                                 info.Add(item.Key, responseModelInfo);
                             }
                         }
+                    }
+                    else
+                    {
+                        var openApis = Schemas.SingleOrDefault(x => x.Key == key).Value.Enum.Select(x => ((OpenApiInteger)x));
+                        var enums = openApis.Select(x => x.Value).ToArray();
+                        var enumInfo = new EnumInfo()
+                        {
+                            枚举值 = enums,
+                            枚举值类型 = key,
+                            枚举类型 = schema.Type
+                        };
+                        info.Add(key, enumInfo);
                     }
                     return info;
                 }
