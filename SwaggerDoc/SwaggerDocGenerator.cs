@@ -289,7 +289,7 @@ namespace SwaggerDoc
                         var properties = new Dictionary<string, object>();
                         foreach (var item in schema.Properties)
                         {
-                            object obj ="object";
+                            object obj = "object";
                             if (item.Value.IsObject(Schemas))
                             {
                                 var objKey = item.Value.Reference.Id;
@@ -319,6 +319,12 @@ namespace SwaggerDoc
                                     枚举描述 = enumObj.Description
                                 };
                             }
+                            else
+                            {
+                                obj = item.Value.Format ?? item.Value.Type;
+                            }
+
+
                             if (isShowRequired)
                             {
                                 var requestModelInfo = new RequestModelInfo

@@ -10,7 +10,7 @@ namespace Samples.Models
         /// <summary>
         /// Status Type XML
         /// </summary>
-        public StatusType StatusType { get; set; }
+        public StatusType Status { get; set; }
         /// <summary>
         /// 消息
         /// </summary>
