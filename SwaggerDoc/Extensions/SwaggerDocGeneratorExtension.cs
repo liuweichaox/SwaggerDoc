@@ -61,7 +61,7 @@ namespace SwaggerDoc.Extensions
         /// <returns></returns>
         public static bool IsBaseTypeArray(this OpenApiSchema openApiSchema)
         {
-            return openApiSchema.Type == "array" && openApiSchema.Items != null && openApiSchema.Items.Type != null && openApiSchema.Items.Reference.Id == null;
+            return openApiSchema.Type == "array" && openApiSchema.Items != null && openApiSchema.Items.Type != null && openApiSchema.Items.Reference == null;
         }
 
         /// <summary>
