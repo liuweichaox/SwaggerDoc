@@ -115,7 +115,7 @@ namespace SwaggerDoc
             {
                 var queryTitle = "|参数名称|参数类型|参数位置|描述|".NewLine();
                 queryTitle += "|:----:|:----:|:----:|:----:|".NewLine();
-                var queryStr = $"|{parameter.Name}|{parameter.Schema.Type}|{parameter.In}|{parameter.Description}|".NewLine();
+                var queryStr = $"|{parameter.Name}|{parameter.Schema.Type ?? parameter.Schema.Reference.Id}|{parameter.In}|{parameter.Description}|".NewLine();
                 str += isFirst ? $"{queryTitle}{queryStr}" : queryStr;
                 isFirst = false;
             }
@@ -175,7 +175,7 @@ namespace SwaggerDoc
             }
             else
             {
-                exapmle = GetDefaultValue(apiSchema.Type);
+                exapmle = GetDefaultValue(apiSchema.Type ?? apiSchema.Reference.Id);
             }
             return exapmle;
         }
@@ -236,7 +236,7 @@ namespace SwaggerDoc
             if (apiSchema.IsObject(Schemas))
                 key = apiSchema?.Reference?.Id;
             else if (apiSchema.IsArray())
-                key = apiSchema?.Items?.Reference?.Id ?? apiSchema.Items.Type;
+                key = apiSchema.Items.Type ?? apiSchema.Items.Reference.Id;
             else if (apiSchema.IsBaseType())
                 key = apiSchema.Type;
             if (key != null)
