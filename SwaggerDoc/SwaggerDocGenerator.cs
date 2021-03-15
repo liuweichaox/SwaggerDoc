@@ -104,6 +104,11 @@ namespace SwaggerDoc.Helpers
             }
             return markDown.ToString();
         }
+        /// <summary>
+        /// 获取参数
+        /// </summary>
+        /// <param name="apiParameters"></param>
+        /// <returns></returns>
         private string GetParameters(IList<OpenApiParameter> apiParameters)
         {
             string str = null;
@@ -118,6 +123,11 @@ namespace SwaggerDoc.Helpers
             }
             return str;
         }
+        /// <summary>
+        /// 获取 RequestBody 参数说明、JSON 示例
+        /// </summary>
+        /// <param name="body"></param>
+        /// <returns></returns>
         private (string exampleJson, string schemaJson) GetRequestBody(OpenApiRequestBody body)
         {
             string exampleJson = null, schemaJson = null;
@@ -125,11 +135,15 @@ namespace SwaggerDoc.Helpers
             {
                 var schema = body.Content[contentType].Schema;
                 exampleJson += GetExapmple(schema).ToJson();
-                schemaJson += GetModelInfo(schema, (id) => GetModelTProc(id)).ToJson();
+                schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id)).ToJson();
             }
             return (exampleJson, schemaJson);
         }
-
+        /// <summary>
+        /// 获取 GetResponses 参数说明、JSON 示例
+        /// </summary>
+        /// <param name="body"></param>
+        /// <returns></returns>
         private (string exampleJson, string schemaJson) GetResponses(OpenApiResponses body)
         {
             string exampleJson = null, schemaJson = null;
@@ -137,23 +151,28 @@ namespace SwaggerDoc.Helpers
             {
                 var schema = body["200"].Content[contentType].Schema;
                 exampleJson += GetExapmple(schema).ToJson();
-                schemaJson += GetModelInfo(schema, (id) => GetModelTProc(id, false)).ToJson();
+                schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id, false)).ToJson();
             }
             return (exampleJson, schemaJson);
         }
+        /// <summary>
+        /// 获取 Body 示例
+        /// </summary>
+        /// <param name="apiSchema"></param>
+        /// <returns></returns>
         private object GetExapmple(OpenApiSchema apiSchema)
         {
             object exapmle = null;
             if (apiSchema.Type == null && apiSchema.Reference != null)//object
             {
                 var key = apiSchema?.Reference?.Id;
-                exapmle = GetModelExample(key);
+                exapmle = GetExapmple(key);
             }
             else if (apiSchema.Type == "array" && apiSchema.Items != null)//array
             {
                 var key = apiSchema?.Items?.Reference?.Id;
                 if (key != null)
-                    exapmle = new[] { GetModelExample(key) };
+                    exapmle = new[] { GetExapmple(key) };
                 else if (key == null && apiSchema.Items.Type != null)
                     exapmle = new[] { GetDefaultValue(apiSchema.Items.Type) };
             }
@@ -163,7 +182,12 @@ namespace SwaggerDoc.Helpers
             }
             return exapmle;
         }
-        private object GetModelExample(string key)
+        /// <summary>
+        /// 递归获取 Body 示例
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        private object GetExapmple(string key)
         {
             if (key != null && Schemas.ContainsKey(key))
             {
@@ -179,15 +203,15 @@ namespace SwaggerDoc.Helpers
                             if (objKey == key)
                                 exapmle.Add(item.Key, null);
                             else
-                                exapmle.Add(item.Key, GetModelExample(objKey));
+                                exapmle.Add(item.Key, GetExapmple(objKey));
                         }
                         else if (item.Value.Items != null)
                         {
                             var arrayKey = item.Value?.Items?.Reference?.Id;
                             if (arrayKey != null)
-                                exapmle.Add(item.Key, new[] { GetModelExample(arrayKey) });
+                                exapmle.Add(item.Key, new[] { GetExapmple(arrayKey) });
                             else if (item.Value.Items.Type != null)
-                                exapmle.Add(item.Key, new[] { GetModelExample(item.Value.Items.Type) });
+                                exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Type) });
                         }
                         else
                         {
@@ -203,6 +227,12 @@ namespace SwaggerDoc.Helpers
             return null;
         }
 
+        /// <summary>
+        /// 获取 Body 参数说明
+        /// </summary>
+        /// <param name="apiSchema"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
         private object GetModelInfo(OpenApiSchema apiSchema, Func<string, object> func)
         {
             object info = null;
@@ -217,7 +247,13 @@ namespace SwaggerDoc.Helpers
                 info = func(key);
             return info;
         }
-        private object GetModelTProc(string key, bool isShowRequired = true)
+        /// <summary>
+        /// 递归获取 Body 参数说明
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="isShowRequired"></param>
+        /// <returns></returns>
+        private object GetModelInfo(string key, bool isShowRequired = true)
         {
             if (key != null)
             {
@@ -236,7 +272,7 @@ namespace SwaggerDoc.Helpers
                                 if (objKey == key)
                                     obj = objKey;
                                 else
-                                    obj = GetModelTProc(objKey, isShowRequired);
+                                    obj = GetModelInfo(objKey, isShowRequired);
 
                             }
                             else if (item.Value.Items != null)
@@ -244,7 +280,7 @@ namespace SwaggerDoc.Helpers
                                 var arrayKey = item.Value?.Items?.Reference?.Id;
                                 if (item.Value.Items.Type != null && arrayKey == null)
                                     arrayKey = item.Value.Items.Type;
-                                obj = GetModelTProc(arrayKey, isShowRequired);
+                                obj = GetModelInfo(arrayKey, isShowRequired);
                             }
                             else
                             {
@@ -283,6 +319,11 @@ namespace SwaggerDoc.Helpers
             }
             return null;
         }
+        /// <summary>
+        /// 获取类型默认值
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private object GetDefaultValue(string type)
         {
             var number = new string[] { "byte", "decimal", "double", "enum", "float", "int32", "int64", "sbyte", "short", "uint", "ulong", "ushort" };
@@ -296,7 +337,11 @@ namespace SwaggerDoc.Helpers
                 return DateTime.Now;
             return null;
         }
-
+        /// <summary>
+        /// 获取 MarkDown 文件流
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<MemoryStream> GetSwaggerDocStreamAsync(string name)
         {
             using var stream = new MemoryStream();
