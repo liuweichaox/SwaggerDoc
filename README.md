@@ -14,24 +14,24 @@ public interface ISwaggerDocGenerator
 ### 注册SwaggerDoc服务
 
 ```C#
-          services.AddSwaggerDoc();//（用于MarkDown生成）
+services.AddSwaggerDoc();//（用于MarkDown生成）
 ```
 
 ### 注册Swagger服务
 
 ```C#
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API 示例文档", Version = "v1",Description="API文档全部由代码自动生成" });
-                c.IncludeXmlComments("Samples.xml");
-            });
+services.AddSwaggerGen(c =>
+{
+	c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API 示例文档", Version = "v1",Description="API文档全部由代码自动生成" });
+	c.IncludeXmlComments("Samples.xml");
+});
 ```
 
 ### 引用Swagger中间件
 
 ```C#
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Samples v1"));
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Samples v1"));
 ```
 ## 3、生成MarkDown
 
