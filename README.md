@@ -62,4 +62,10 @@ public class SwaggerController : ControllerBase
 
 如果需要样式调整，可以去https://theme.typora.io/ 选选
 
+**Swagger文档**
+
+![api.png](https://github.com/lwc1st/SwaggerDoc/blob/master/Docs/Images/api.png?raw=true)
+
+**离线PDF文档**
+
 ![swagger.png](https://github.com/lwc1st/SwaggerDoc/blob/master/Docs/Images/swagger.png?raw=true)
