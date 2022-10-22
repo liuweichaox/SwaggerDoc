@@ -7,7 +7,7 @@ namespace SwaggerDoc.Models
 {
 
     /// <summary>
-    /// ModelExample
+    /// 模型示例 
     /// </summary>
     public class ModelExample : Dictionary<string, object>
     {

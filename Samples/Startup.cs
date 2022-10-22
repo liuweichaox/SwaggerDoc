@@ -15,16 +15,29 @@ using System.Threading.Tasks;
 
 namespace Samples
 {
+    /// <summary>
+    /// å¯åŠ¨ç±»
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// å¯åŠ¨ç±»
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// é…ç½®
+        /// </summary>
+        private IConfiguration Configuration { get;}
+        
+        /// <summary>
+        /// é…ç½®æœåŠ¡
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -32,12 +45,16 @@ namespace Samples
             services.AddSwaggerDoc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API Ê¾ÀıÎÄµµ", Version = "v1",Description="APIÎÄµµÈ«²¿ÓÉ´úÂë×Ô¶¯Éú³É" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API Ê¾ï¿½ï¿½ï¿½Äµï¿½", Version = "v1",Description="APIï¿½Äµï¿½È«ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½" });
                 c.IncludeXmlComments("Samples.xml");
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// é…ç½®ä¸­é—´ä»¶
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

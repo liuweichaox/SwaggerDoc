@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SwaggerDoc
 {
     /// <summary>
-    /// ISwaggerDocGenerator
+    /// Swagger 文档生成器接口
     /// </summary>
     public interface ISwaggerDocGenerator
     {

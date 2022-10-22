@@ -13,32 +13,36 @@ using System.Threading.Tasks;
 namespace SwaggerDoc
 {
     /// <summary>
-    /// SwaggerDocGenerator
+    /// Swagger 文档生成器实现
     /// </summary>
     public class SwaggerDocGenerator : ISwaggerDocGenerator
     {
         /// <summary>
-        /// SwaggerGenerator
+        /// Swagger 文档生成器
         /// </summary>
         private readonly SwaggerGenerator _generator;
+
         /// <summary>
         /// Schemas
         /// </summary>
-        private IDictionary<string, OpenApiSchema> Schemas;
+        private IDictionary<string, OpenApiSchema> _schemas;
+
         /// <summary>
-        /// contentType
+        /// ContentType
         /// </summary>
-        const string contentType = "application/json";
+        private const string ContentType = "application/json";
+
         /// <summary>
-        /// SwaggerDocGenerator
+        /// 构造器
         /// </summary>
         /// <param name="swagger"></param>
         public SwaggerDocGenerator(SwaggerGenerator swagger)
         {
             _generator = swagger;
         }
+
         /// <summary>
-        /// 生成MarkDown
+        /// 生成 MarkDown
         /// </summary>
         /// <returns></returns>
         public string GetSwaggerDoc(string name)
@@ -48,67 +52,79 @@ namespace SwaggerDoc
             var document = _generator.GetSwagger(name);
             if (document == null)
                 throw new Exception("document is null !");
-            Schemas = document.Components.Schemas;
+            _schemas = document.Components.Schemas;
             var markDown = new StringBuilder();
-            markDown.AppendLine(document?.Info?.Title.H());//文档标题
-            markDown.AppendLine(document?.Info?.Description.Ref());//文档描述
-            foreach (var path in document.Paths)
+            markDown.AppendLine(document?.Info?.Title.H()); //文档标题
+            markDown.AppendLine(document?.Info?.Description.Ref()); //文档描述
+            foreach (var (url, value) in document.Paths)
             {
-                foreach (var operationItem in path.Value.Operations)
+                foreach (var operationItem in value.Operations)
                 {
                     var operation = operationItem.Value;
                     var method = operationItem.Key.ToString();
                     var row = new StringBuilder();
-                    var url = path.Key;
                     var title = operation.Summary ?? url;
+
                     var query = GetParameters(operation.Parameters);
-                    var (requestExapmle, requestSchema) = GetRequestBody(operation.RequestBody);
-                    var (responseExapmle, responseSchema) = GetResponses(operation.Responses);
-                    row.AppendLine(title.H(2));//接口名称
-                    row.AppendLine("基本信息".H(3).NewLine());//基本信息
+
+                    var (requestExample, requestSchema) = GetRequestBody(operation.RequestBody);
+
+                    var (responseExample, responseSchema) = GetResponses(operation.Responses);
+
+                    row.AppendLine(title.H(2)); //接口名称
+                    row.AppendLine("基本信息".H(3).NewLine()); //基本信息
                     row.AppendLine($"{"接口地址：".B()}{url}".Li().NewLine());
                     row.AppendLine($"{"请求方式：".B()}{method}".Li().NewLine());
-                    if (method == "Post" || method == "Put")
+
+                    if (method is "Post" or "Put")
                     {
-                        row.AppendLine($"{"请求类型：".B()}{contentType}".Li().NewLine());
+                        row.AppendLine($"{"请求类型：".B()}{ContentType}".Li().NewLine());
                     }
-                    if (string.IsNullOrWhiteSpace(query) == false)//Query
+
+                    if (string.IsNullOrWhiteSpace(query) == false) //Query
                     {
                         row.AppendLine("Parameters".H(3));
                         row.AppendLine(query);
                     }
-                    if (string.IsNullOrWhiteSpace(requestSchema) == false)//RequestSchema
+
+                    if (string.IsNullOrWhiteSpace(requestSchema) == false) //RequestSchema
                     {
                         row.AppendLine("Request Schema".H(3));
                         row.AppendLine(requestSchema.Code());
                     }
-                    if (string.IsNullOrWhiteSpace(requestExapmle) == false)//RequestBody
+
+                    if (string.IsNullOrWhiteSpace(requestExample) == false) //RequestBody
                     {
                         row.AppendLine("RequestBody Example".H(3));
-                        row.AppendLine(requestExapmle.Code());
+                        row.AppendLine(requestExample.Code());
                     }
-                    if (string.IsNullOrWhiteSpace(responseSchema) == false)//ResponseSchema
+
+                    if (string.IsNullOrWhiteSpace(responseSchema) == false) //ResponseSchema
                     {
                         row.AppendLine("Response Schema".H(3));
                         row.AppendLine(responseSchema.Code());
                     }
-                    if (string.IsNullOrWhiteSpace(responseExapmle) == false)//ResponseBody
+
+                    if (string.IsNullOrWhiteSpace(responseExample) == false) //ResponseBody
                     {
                         row.AppendLine("ResponseBody Example".H(3));
-                        row.AppendLine(responseExapmle.Code());
+                        row.AppendLine(responseExample.Code());
                     }
+
                     if (string.IsNullOrWhiteSpace(row.ToString()) == false)
                         markDown.AppendLine(row.ToString().Br());
                 }
             }
+
             return markDown.ToString();
         }
+
         /// <summary>
         /// 获取参数
         /// </summary>
         /// <param name="apiParameters"></param>
         /// <returns></returns>
-        private string GetParameters(IList<OpenApiParameter> apiParameters)
+        private static string GetParameters(IEnumerable<OpenApiParameter> apiParameters)
         {
             string str = null;
             var isFirst = true;
@@ -116,12 +132,16 @@ namespace SwaggerDoc
             {
                 var queryTitle = "|参数名称|参数类型|参数位置|描述|".NewLine();
                 queryTitle += "|:----:|:----:|:----:|:----:|".NewLine();
-                var queryStr = $"|{parameter.Name}|{parameter.Schema.Type ?? parameter.Schema.Reference.Id}|{parameter.In}|{parameter.Description}|".NewLine();
+                var queryStr =
+                    $"|{parameter.Name}|{parameter.Schema.Type ?? parameter.Schema.Reference.Id}|{parameter.In}|{parameter.Description}|"
+                        .NewLine();
                 str += isFirst ? $"{queryTitle}{queryStr}" : queryStr;
                 isFirst = false;
             }
+
             return str;
         }
+
         /// <summary>
         /// 获取 RequestBody 参数说明、JSON 示例
         /// </summary>
@@ -129,13 +149,14 @@ namespace SwaggerDoc
         /// <returns></returns>
         private (string exampleJson, string schemaJson) GetRequestBody(OpenApiRequestBody body)
         {
-            if (body == null || body.Content.ContainsKey(contentType) == false) return (null, null);
+            if (body == null || body.Content.ContainsKey(ContentType) == false) return (null, null);
             string exampleJson = null, schemaJson = null;
-            var schema = body.Content[contentType].Schema;
-            exampleJson += GetExapmple(schema).ToJson();
+            var schema = body.Content[ContentType].Schema;
+            exampleJson += GetExample(schema).ToJson();
             schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id)).ToJson();
             return (exampleJson, schemaJson);
         }
+
         /// <summary>
         /// 获取 GetResponses 参数说明、JSON 示例
         /// </summary>
@@ -143,43 +164,44 @@ namespace SwaggerDoc
         /// <returns></returns>
         private (string exampleJson, string schemaJson) GetResponses(OpenApiResponses body)
         {
-            if (body == null || body["200"].Content.ContainsKey(contentType) == false) return (null, null);
+            if (body == null || body["200"].Content.ContainsKey(ContentType) == false) return (null, null);
             string exampleJson = null, schemaJson = null;
-            var schema = body["200"].Content[contentType].Schema;
-            exampleJson += GetExapmple(schema).ToJson();
+            var schema = body["200"].Content[ContentType].Schema;
+            exampleJson += GetExample(schema).ToJson();
             schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id, false)).ToJson();
             return (exampleJson, schemaJson);
         }
+
         /// <summary>
         /// 获取 Body 示例
         /// </summary>
         /// <param name="apiSchema"></param>
         /// <returns></returns>
-        private object GetExapmple(OpenApiSchema apiSchema)
+        private object GetExample(OpenApiSchema apiSchema)
         {
-            object exapmle = null;
-            if (apiSchema.IsObject(Schemas))
+            object example = null;
+            if (apiSchema.IsObject(_schemas))
             {
                 var key = apiSchema.Reference.Id;
-                exapmle = GetExapmple(key);
+                example = GetExample(key);
             }
             else if (apiSchema.IsArray())
             {
-                if (apiSchema.IsBaseTypeArray())
-                    exapmle = new[] { GetDefaultValue(apiSchema.Items.Type) };
-                else
-                    exapmle = new[] { GetExapmple(apiSchema.Items.Reference.Id) };
+                example = apiSchema.IsBaseTypeArray()
+                    ? new[] {GetDefaultValue(apiSchema.Items.Type)}
+                    : new[] {GetExample(apiSchema.Items.Reference.Id)};
             }
-            else if (apiSchema.IsEnum(Schemas))
+            else if (apiSchema.IsEnum(_schemas))
             {
                 var key = apiSchema.Reference.Id;
-                exapmle = GetEnum(key).Select(x => x.Value).Min();
+                example = GetEnum(key).Select(x => x.Value).Min();
             }
             else
             {
-                exapmle = GetDefaultValue(apiSchema.Type);
+                example = GetDefaultValue(apiSchema.Type);
             }
-            return exapmle;
+
+            return example;
         }
 
         /// <summary>
@@ -188,58 +210,58 @@ namespace SwaggerDoc
         /// <param name="enumType"></param>
         /// <returns></returns>
         private int[] GetEnumValues(string enumType) => GetEnum(enumType).Select(x => x.Value).ToArray();
+
         /// <summary>
         /// 获取枚举
         /// </summary>
         /// <param name="enumType"></param>
         /// <returns></returns>
-        private IEnumerable<OpenApiInteger> GetEnum(string enumType) => GetEnumSchema(enumType).Enum.Select(x => ((OpenApiInteger)x));
+        private IEnumerable<OpenApiInteger> GetEnum(string enumType) =>
+            GetEnumSchema(enumType).Enum.Select(x => ((OpenApiInteger) x));
+
         /// <summary>
-        /// 获取枚举Schema
+        /// 获取枚举 Schema
         /// </summary>
         /// <param name="enumType"></param>
         /// <returns></returns>
-        private OpenApiSchema GetEnumSchema(string enumType) => Schemas.SingleOrDefault(x => x.Key == enumType).Value;
+        private OpenApiSchema GetEnumSchema(string enumType) => _schemas.SingleOrDefault(x => x.Key == enumType).Value;
 
         /// <summary>
         /// 递归获取 Body 示例
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        private object GetExapmple(string key)
+        private object GetExample(string key)
         {
-            if (key == null || Schemas.ContainsKey(key) == false) return null;
-            var schema = Schemas.SingleOrDefault(x => x.Key == key).Value;
+            if (key == null || _schemas.ContainsKey(key) == false) return null;
+            var schema = _schemas.SingleOrDefault(x => x.Key == key).Value;
             if (schema.Properties.Any() == false) return null;
-            var exapmle = new ModelExample();
-            foreach (var item in schema.Properties)
+            var example = new ModelExample();
+            foreach (var (s, value) in schema.Properties)
             {
-                if (item.Value.IsObject(Schemas))
+                if (value.IsObject(_schemas))
                 {
-                    var objKey = item.Value.Reference.Id;
-                    if (objKey == key)
-                        exapmle.Add(item.Key, null);
-                    else
-                        exapmle.Add(item.Key, GetExapmple(objKey));
+                    var objKey = value.Reference.Id;
+                    example.Add(s, objKey == key ? null : GetExample(objKey));
                 }
-                else if (item.Value.IsArray())
+                else if (value.IsArray())
                 {
-                    if (item.Value.IsBaseTypeArray())
-                        exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Type) });
-                    else
-                        exapmle.Add(item.Key, new[] { GetExapmple(item.Value.Items.Reference.Id) });
+                    example.Add(s,
+                        value.IsBaseTypeArray()
+                            ? new[] {GetExample(value.Items.Type)}
+                            : new[] {GetExample(value.Items.Reference.Id)});
                 }
                 else
                 {
-                    if (item.Value.IsEnum(Schemas))
-                        exapmle.Add(item.Key, GetEnumValues(item.Value.Reference.Id).Min());
-                    else
-                        exapmle.Add(item.Key, GetDefaultValue(item.Value.Format ?? item.Value.Type));
+                    example.Add(s,
+                        value.IsEnum(_schemas)
+                            ? GetEnumValues(value.Reference.Id).Min()
+                            : GetDefaultValue(value.Format ?? value.Type));
                 }
             }
-            return exapmle;
-        }
 
+            return example;
+        }
 
         /// <summary>
         /// 获取 Body 参数说明
@@ -251,7 +273,7 @@ namespace SwaggerDoc
         {
             object info = null;
             var key = "";
-            if (apiSchema.IsObject(Schemas) || apiSchema.IsEnum(Schemas))
+            if (apiSchema.IsObject(_schemas) || apiSchema.IsEnum(_schemas))
                 key = apiSchema.Reference.Id;
             else if (apiSchema.IsArray())
                 key = apiSchema.Items.Type ?? apiSchema.Items.Reference.Id;
@@ -261,6 +283,7 @@ namespace SwaggerDoc
                 info = func(key);
             return info;
         }
+
         /// <summary>
         /// 递归获取 Body 参数说明
         /// </summary>
@@ -270,8 +293,8 @@ namespace SwaggerDoc
         private object GetModelInfo(string key, bool isShowRequired = true)
         {
             if (key == null) return null;
-            if (key != null && Schemas.ContainsKey(key) == false) return key;
-            var schema = Schemas.SingleOrDefault(x => x.Key == key).Value;
+            if (_schemas.ContainsKey(key) == false) return key;
+            var schema = _schemas.SingleOrDefault(x => x.Key == key).Value;
             if (schema.Properties.Any() == false)
                 return new EnumInfo()
                 {
@@ -284,24 +307,18 @@ namespace SwaggerDoc
             foreach (var item in schema.Properties)
             {
                 object obj = "object";
-                if (item.Value.IsObject(Schemas))
+                if (item.Value.IsObject(_schemas))
                 {
                     var objKey = item.Value.Reference.Id;
-                    if (objKey == key)
-                        obj = objKey;
-                    else
-                        obj = GetModelInfo(objKey, isShowRequired);
+                    obj = objKey == key ? objKey : GetModelInfo(objKey, isShowRequired);
                 }
                 else if (item.Value.IsArray())
                 {
                     var arrayKey = "";
-                    if (item.Value.IsBaseTypeArray())
-                        arrayKey = item.Value.Items.Type;
-                    else
-                        arrayKey = item.Value.Items.Reference.Id;
-                    obj = new[] { GetModelInfo(arrayKey, isShowRequired) };
+                    arrayKey = item.Value.IsBaseTypeArray() ? item.Value.Items.Type : item.Value.Items.Reference.Id;
+                    obj = new[] {GetModelInfo(arrayKey, isShowRequired)};
                 }
-                else if (item.Value.IsEnum(Schemas))
+                else if (item.Value.IsEnum(_schemas))
                 {
                     var enumKey = item.Value.Reference.Id;
                     var enumObj = GetEnumSchema(enumKey);
@@ -340,22 +357,37 @@ namespace SwaggerDoc
                     properties.Add(item.Key, responseModelInfo);
                 }
             }
+
             return properties;
         }
+
         /// <summary>
         /// 获取类型默认值
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private object GetDefaultValue(string type)
+        private static object GetDefaultValue(string type)
         {
-            var number = new string[] { "byte", "decimal", "double", "enum", "float", "int32", "int64", "sbyte", "short", "uint", "ulong", "ushort" };
+            var number = new string[]
+            {
+                "byte", "decimal", "double", "enum", "float", "int32", "int64", "sbyte", "short", "uint", "ulong",
+                "ushort"
+            };
             if (number.Any(x => type == x)) return 0;
-            if (type == "string") return "string";
-            if (type == "bool" || type == "boolean") return false;
-            if (type == "date-time") return DateTime.Now;
-            return null;
+            switch (type)
+            {
+                case "string":
+                    return "string";
+                case "bool":
+                case "boolean":
+                    return false;
+                case "date-time":
+                    return DateTime.Now;
+                default:
+                    return null;
+            }
         }
+
         /// <summary>
         /// 获取 MarkDown 文件流
         /// </summary>
@@ -363,8 +395,8 @@ namespace SwaggerDoc
         /// <returns></returns>
         public async Task<MemoryStream> GetSwaggerDocStreamAsync(string name)
         {
-            using var stream = new MemoryStream();
-            using var sw = new StreamWriter(stream);
+            await using var stream = new MemoryStream();
+            await using var sw = new StreamWriter(stream);
             var content = GetSwaggerDoc(name);
             await sw.WriteLineAsync(content);
             return stream;

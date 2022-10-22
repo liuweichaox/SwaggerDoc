@@ -1,43 +1,46 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace SwaggerDoc.Extensions
 {
+    /// <summary>
+    /// JSON 拓展
+    /// </summary>
     public static class JsonExtension
     {
+        /// <summary>
+        /// 转换为JSON字符串
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static string ToJson(this object obj)
         {
             return ConvertJsonString(JsonConvert.SerializeObject(obj));
         }
+        
+        /// <summary>
+        /// 转换为JSON字符串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         private static string ConvertJsonString(string str)
         {
-            JsonSerializer serializer = new JsonSerializer();
+            var serializer = new JsonSerializer();
             TextReader tr = new StringReader(str);
-            JsonTextReader jtr = new JsonTextReader(tr);
-            object obj = serializer.Deserialize(jtr);
-            if (obj != null)
+            var jtr = new JsonTextReader(tr);
+            var obj = serializer.Deserialize(jtr);
+            if (obj == null) return str;
+            var textWriter = new StringWriter();
+            var jsonWriter = new JsonTextWriter(textWriter)
             {
-                StringWriter textWriter = new StringWriter();
-                JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
-                {
-                    Formatting = Formatting.Indented,
-                    Indentation = 4,
-                    IndentChar = ' '
-                };
-                serializer.Serialize(jsonWriter, obj);
-                return textWriter.ToString();
-            }
-            else
-            {
-                return str;
-            }
+                Formatting = Formatting.Indented,
+                Indentation = 4,
+                IndentChar = ' '
+            };
+            serializer.Serialize(jsonWriter, obj);
+            return textWriter.ToString();
+
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SwaggerDoc.Models
 {
     /// <summary>
-    /// BaseModelInfo
+    /// 基础模型
     /// </summary>
     public abstract class BaseModelInfo
     {

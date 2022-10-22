@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Samples.Models
 {
     /// <summary>
-    /// Status Type
+    /// 枚举类型
     /// </summary>
     public enum StatusType
     {

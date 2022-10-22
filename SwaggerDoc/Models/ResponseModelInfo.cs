@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SwaggerDoc.Models
 {
     /// <summary>
-    /// ResponseModelInfo
+    /// 响应模型
     /// </summary>
     public class ResponseModelInfo : BaseModelInfo
     {
