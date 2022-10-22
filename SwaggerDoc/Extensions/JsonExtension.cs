@@ -10,7 +10,7 @@ namespace SwaggerDoc.Extensions
     public static class JsonExtension
     {
         /// <summary>
-        /// 转换为JSON字符串
+        /// 转换为 JSON 字符串
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -20,7 +20,7 @@ namespace SwaggerDoc.Extensions
         }
         
         /// <summary>
-        /// 转换为JSON字符串
+        /// 转换为 JSON 字符串
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>

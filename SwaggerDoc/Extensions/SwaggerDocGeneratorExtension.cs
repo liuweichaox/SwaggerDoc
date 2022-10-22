@@ -22,15 +22,18 @@ namespace SwaggerDoc.Extensions
             services.AddScoped<ISwaggerDocGenerator, SwaggerDocGenerator>();
             return services;
         }
+
         /// <summary>
         /// 判断是否为 Object 类型
         /// </summary>
         /// <param name="openApiSchema"></param>
+        /// <param name="schemas"></param>
         /// <returns></returns>
         public static bool IsObject(this OpenApiSchema openApiSchema, IDictionary<string, OpenApiSchema> schemas)
         {
             return openApiSchema.Type == null && openApiSchema.Reference != null && schemas.FirstOrDefault(x => x.Key == openApiSchema.Reference.Id).Value.Enum.Count == 0;
         }
+       
         /// <summary>
         /// 判断是否为枚举类型
         /// </summary>
@@ -41,6 +44,7 @@ namespace SwaggerDoc.Extensions
         {
             return openApiSchema.Reference != null && schemas.FirstOrDefault(x => x.Key == openApiSchema.Reference.Id).Value.Enum.Count != 0;
         }
+     
         /// <summary>
         /// 判断是否为数组类型
         /// </summary>
@@ -50,6 +54,7 @@ namespace SwaggerDoc.Extensions
         {
             return openApiSchema.Type == "array" && openApiSchema.Items != null;
         }
+       
         /// <summary>
         /// 判断是否为基础数组类型
         /// </summary>
@@ -57,7 +62,7 @@ namespace SwaggerDoc.Extensions
         /// <returns></returns>
         public static bool IsBaseTypeArray(this OpenApiSchema openApiSchema)
         {
-            return openApiSchema.Type == "array" && openApiSchema.Items != null && openApiSchema.Items.Type != null && openApiSchema.Items.Reference == null;
+            return openApiSchema.Type == "array" && openApiSchema.Items is {Type: { }, Reference: null};
         }
 
         /// <summary>

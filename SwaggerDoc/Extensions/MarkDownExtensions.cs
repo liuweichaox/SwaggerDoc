@@ -4,7 +4,7 @@ using System.Linq;
 namespace SwaggerDoc.Extensions
 {
     /// <summary>
-    /// MarkDown文档扩展
+    /// MarkDown 文档扩展
     /// </summary>
     public static class MarkDownExtensions
     {
@@ -65,7 +65,7 @@ namespace SwaggerDoc.Extensions
         /// </summary>
         /// <param name="name">名称</param>
         /// <param name="url">超链接地址</param>
-        /// <param name="title">链接title</param>
+        /// <param name="title">链接 title</param>
         /// <returns></returns>
         public static string Link(this string name, string url, string title = "") => $"[{name}]({url} {title})";
         
