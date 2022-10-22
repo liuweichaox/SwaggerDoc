@@ -4,14 +4,54 @@
         <name>Samples</name>
     </assembly>
     <members>
-        <member name="T:SwaggerDoc.Controllers.SwaggerController">
+        <member name="T:Samples.Controllers.SwaggerController">
             <summary>
-            SwaggerController
+            Swagger 控制器
             </summary>
         </member>
-        <member name="M:SwaggerDoc.Controllers.SwaggerController.Doc(SwaggerDoc.ISwaggerDocGenerator,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:Samples.Controllers.SwaggerController.Doc(SwaggerDoc.ISwaggerDocGenerator,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             API文档导出
+            </summary>
+        </member>
+        <member name="T:Samples.Controllers.ValuesController">
+            <summary>
+            示例控制器
+            </summary>
+        </member>
+        <member name="M:Samples.Controllers.ValuesController.Get(System.Int32,Samples.Models.Input)">
+            <summary>
+            Get方法
+            </summary>
+            <param name="id"></param>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Samples.Controllers.ValuesController.Post(System.String)">
+            <summary>
+            Post方法
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Samples.Controllers.ValuesController.Put(System.Int32,System.String)">
+            <summary>
+            Put方法
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Samples.Controllers.ValuesController.Delete(System.Int32)">
+            <summary>
+            Delete方法
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:Samples.Models.Input">
+            <summary>
+            输入模型 <see>
+                <cref>HomeController.Index</cref>
+            </see>
+            action.
             </summary>
         </member>
         <member name="P:Samples.Models.Input.Type">
@@ -22,6 +62,14 @@
         <member name="P:Samples.Models.Input.Code">
             <summary>
              Code XML
+            </summary>
+        </member>
+        <member name="T:Samples.Models.Output">
+            <summary>
+            输入模型 <see>
+                <cref>HomeController.Index</cref>
+            </see>
+            action.
             </summary>
         </member>
         <member name="P:Samples.Models.Output.Status">
@@ -36,7 +84,7 @@
         </member>
         <member name="T:Samples.Models.StatusType">
             <summary>
-            Status Type
+            枚举类型
             </summary>
         </member>
         <member name="F:Samples.Models.StatusType.Success">
@@ -48,6 +96,53 @@
             <summary>
             Error
             </summary>
+        </member>
+        <member name="T:Samples.Program">
+            <summary>
+            主程序
+            </summary>
+        </member>
+        <member name="M:Samples.Program.Main(System.String[])">
+            <summary>
+            主程序入口
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Samples.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            创建主机
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Samples.Startup">
+            <summary>
+            启动类
+            </summary>
+        </member>
+        <member name="M:Samples.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            启动类
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Samples.Startup.Configuration">
+            <summary>
+            配置
+            </summary>
+        </member>
+        <member name="M:Samples.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            配置服务
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Samples.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            配置中间件
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
         </member>
     </members>
 </doc>

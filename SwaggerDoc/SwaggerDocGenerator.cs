@@ -396,7 +396,7 @@ namespace SwaggerDoc
         public async Task<MemoryStream> GetSwaggerDocStreamAsync(string name)
         {
             await using var stream = new MemoryStream();
-            await using var sw = new StreamWriter(stream);
+            await using var sw = new StreamWriter(stream, Encoding.UTF8);
             var content = GetSwaggerDoc(name);
             await sw.WriteLineAsync(content);
             return stream;

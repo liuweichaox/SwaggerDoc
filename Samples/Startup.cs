@@ -45,7 +45,7 @@ namespace Samples
             services.AddSwaggerDoc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API ʾ���ĵ�", Version = "v1",Description="API�ĵ�ȫ���ɴ����Զ�����" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API 文档", Version = "v1",Description="API 文档" });
                 c.IncludeXmlComments("Samples.xml");
             });
         }
