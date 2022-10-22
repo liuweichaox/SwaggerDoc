@@ -1,17 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SwaggerDoc.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using SwaggerDoc;
 
 namespace Samples
 {
@@ -32,20 +27,25 @@ namespace Samples
         /// <summary>
         /// 配置
         /// </summary>
-        private IConfiguration Configuration { get;}
-        
+        private IConfiguration Configuration { get; }
+
         /// <summary>
         /// 配置服务
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerDoc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API 文档", Version = "v1",Description="API 文档" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Swagger API 文档", Version = "v1", Description = "API 文档"});
+                // 添加枚举过滤器，在文档中显示枚举的描述信息
+                c.DocumentFilter<SwaggerEnumFilter>(new object[]
+                {
+                    // 枚举所在的程序集
+                    new[] {Assembly.GetExecutingAssembly()}
+                });
                 c.IncludeXmlComments("Samples.xml");
             });
         }
@@ -70,10 +70,7 @@ namespace Samples
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

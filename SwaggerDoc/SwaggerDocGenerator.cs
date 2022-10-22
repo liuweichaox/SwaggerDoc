@@ -48,34 +48,35 @@ namespace SwaggerDoc
         public string GetSwaggerDoc(string name)
         {
             if (string.IsNullOrEmpty(name))
+            {
                 throw new Exception("name is null !");
+            }
+
             var document = _generator.GetSwagger(name);
             if (document == null)
+            {
                 throw new Exception("document is null !");
+            }
+
             _schemas = document.Components.Schemas;
             var markDown = new StringBuilder();
-            markDown.AppendLine(document?.Info?.Title.H()); //文档标题
-            markDown.AppendLine(document?.Info?.Description.Ref()); //文档描述
+            markDown.AppendLine(document.Info?.Title.H()); //文档标题
+            markDown.AppendLine(document.Info?.Description.Ref()); //文档描述
             foreach (var (url, value) in document.Paths)
             {
-                foreach (var operationItem in value.Operations)
+                foreach (var (key, operation) in value.Operations)
                 {
-                    var operation = operationItem.Value;
-                    var method = operationItem.Key.ToString();
+                    var method = key.ToString();
                     var row = new StringBuilder();
                     var title = operation.Summary ?? url;
-
                     var query = GetParameters(operation.Parameters);
-
                     var (requestExample, requestSchema) = GetRequestBody(operation.RequestBody);
-
                     var (responseExample, responseSchema) = GetResponses(operation.Responses);
-
                     row.AppendLine(title.H(2)); //接口名称
                     row.AppendLine("基本信息".H(3).NewLine()); //基本信息
                     row.AppendLine($"{"接口地址：".B()}{url}".Li().NewLine());
                     row.AppendLine($"{"请求方式：".B()}{method}".Li().NewLine());
-
+                    
                     if (method is "Post" or "Put")
                     {
                         row.AppendLine($"{"请求类型：".B()}{ContentType}".Li().NewLine());
@@ -128,17 +129,16 @@ namespace SwaggerDoc
         {
             string str = null;
             var isFirst = true;
+            var queryTitle = "|参数名称|参数类型|参数位置|描述|".NewLine();
+            queryTitle += "|:----:|:----:|:----:|:----:|".NewLine();
             foreach (var parameter in apiParameters)
             {
-                var queryTitle = "|参数名称|参数类型|参数位置|描述|".NewLine();
-                queryTitle += "|:----:|:----:|:----:|:----:|".NewLine();
                 var queryStr =
                     $"|{parameter.Name}|{parameter.Schema.Type ?? parameter.Schema.Reference.Id}|{parameter.In}|{parameter.Description}|"
                         .NewLine();
                 str += isFirst ? $"{queryTitle}{queryStr}" : queryStr;
                 isFirst = false;
             }
-
             return str;
         }
 
@@ -179,7 +179,7 @@ namespace SwaggerDoc
         /// <returns></returns>
         private object GetExample(OpenApiSchema apiSchema)
         {
-            object example = null;
+            object example;
             if (apiSchema.IsObject(_schemas))
             {
                 var key = apiSchema.Reference.Id;
@@ -304,23 +304,22 @@ namespace SwaggerDoc
                     枚举名称 = key
                 };
             var properties = new Dictionary<string, object>();
-            foreach (var item in schema.Properties)
+            foreach (var (s, value) in schema.Properties)
             {
-                object obj = "object";
-                if (item.Value.IsObject(_schemas))
+                object obj;
+                if (value.IsObject(_schemas))
                 {
-                    var objKey = item.Value.Reference.Id;
+                    var objKey = value.Reference.Id;
                     obj = objKey == key ? objKey : GetModelInfo(objKey, isShowRequired);
                 }
-                else if (item.Value.IsArray())
+                else if (value.IsArray())
                 {
-                    var arrayKey = "";
-                    arrayKey = item.Value.IsBaseTypeArray() ? item.Value.Items.Type : item.Value.Items.Reference.Id;
+                    var arrayKey = value.IsBaseTypeArray() ? value.Items.Type : value.Items.Reference.Id;
                     obj = new[] {GetModelInfo(arrayKey, isShowRequired)};
                 }
-                else if (item.Value.IsEnum(_schemas))
+                else if (value.IsEnum(_schemas))
                 {
-                    var enumKey = item.Value.Reference.Id;
+                    var enumKey = value.Reference.Id;
                     var enumObj = GetEnumSchema(enumKey);
                     obj = new EnumInfo()
                     {
@@ -332,7 +331,7 @@ namespace SwaggerDoc
                 }
                 else
                 {
-                    obj = item.Value.Format ?? item.Value.Type;
+                    obj = value.Format ?? value.Type;
                 }
 
                 if (isShowRequired)
@@ -340,21 +339,21 @@ namespace SwaggerDoc
                     var requestModelInfo = new RequestModelInfo
                     {
                         参数类型 = obj,
-                        描述 = item.Value.Description,
-                        是否必传 = schema.Required.Any(x => x == item.Key),
-                        可空类型 = item.Value.Nullable
+                        描述 = value.Description,
+                        是否必传 = schema.Required.Any(x => x == s),
+                        可空类型 = value.Nullable
                     };
-                    properties.Add(item.Key, requestModelInfo);
+                    properties.Add(s, requestModelInfo);
                 }
                 else
                 {
                     var responseModelInfo = new ResponseModelInfo
                     {
                         参数类型 = obj,
-                        描述 = item.Value.Description,
-                        可空类型 = item.Value.Nullable
+                        描述 = value.Description,
+                        可空类型 = value.Nullable
                     };
-                    properties.Add(item.Key, responseModelInfo);
+                    properties.Add(s, responseModelInfo);
                 }
             }
 
@@ -368,7 +367,7 @@ namespace SwaggerDoc
         /// <returns></returns>
         private static object GetDefaultValue(string type)
         {
-            var number = new string[]
+            var number = new[]
             {
                 "byte", "decimal", "double", "enum", "float", "int32", "int64", "sbyte", "short", "uint", "ulong",
                 "ushort"

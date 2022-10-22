@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.IO;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+﻿using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace SwaggerDoc.Extensions
 {
@@ -16,31 +15,12 @@ namespace SwaggerDoc.Extensions
         /// <returns></returns>
         public static string ToJson(this object obj)
         {
-            return ConvertJsonString(JsonConvert.SerializeObject(obj));
-        }
-        
-        /// <summary>
-        /// 转换为 JSON 字符串
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        private static string ConvertJsonString(string str)
-        {
-            var serializer = new JsonSerializer();
-            TextReader tr = new StringReader(str);
-            var jtr = new JsonTextReader(tr);
-            var obj = serializer.Deserialize(jtr);
-            if (obj == null) return str;
-            var textWriter = new StringWriter();
-            var jsonWriter = new JsonTextWriter(textWriter)
+           var options = new JsonSerializerOptions
             {
-                Formatting = Formatting.Indented,
-                Indentation = 4,
-                IndentChar = ' '
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
             };
-            serializer.Serialize(jsonWriter, obj);
-            return textWriter.ToString();
-
+          return JsonSerializer.Serialize(obj, options);
         }
     }
 }

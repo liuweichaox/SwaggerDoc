@@ -1,3 +1,7 @@
+# 简介
+
+SwaggerDoc 是基于 Swashbuckle.AspNetCore 类库的离线文档生工具。
+
 ##  1、SwaggerDoc引用 
 
 ### 主要接口
@@ -60,7 +64,9 @@ public class SwaggerController : ControllerBase
 
 这里用的是 [typora](https://www.typora.io/) 编辑器，下载 [pandoc](https://github.com/jgm/pandoc/releases) 插件可以实现Marddown格式转换为PDF功能（免费）
 
-如果需要样式调整，可以去https://theme.typora.io/ 选选
+如果需要样式调整，可以去https://theme.typora.io/ 选
+
+
 
 **Swagger文档**
 
@@ -69,3 +75,4 @@ public class SwaggerController : ControllerBase
 **离线PDF文档**
 
 ![swagger.png](https://github.com/lwc1st/SwaggerDoc/blob/master/Docs/Images/swagger.png?raw=true)
+
