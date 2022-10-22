@@ -12,7 +12,7 @@ namespace Samples.Controllers
     {
 
         /// <summary>
-        /// Get方法
+        /// Get 方法
         /// </summary>
         /// <param name="id"></param>
         /// <param name="input"></param>
@@ -24,7 +24,7 @@ namespace Samples.Controllers
         }
         
         /// <summary>
-        /// Post方法
+        /// Post 方法
         /// </summary>
         /// <param name="value"></param>
         [HttpPost]
@@ -33,7 +33,7 @@ namespace Samples.Controllers
         }
         
         /// <summary>
-        /// Put方法
+        /// Put 方法
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
@@ -43,7 +43,7 @@ namespace Samples.Controllers
         }
         
         /// <summary>
-        /// Delete方法
+        /// Delete 方法
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete("{id}")]
