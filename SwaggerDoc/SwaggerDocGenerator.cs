@@ -113,7 +113,9 @@ namespace SwaggerDoc
                     }
 
                     if (string.IsNullOrWhiteSpace(row.ToString()) == false)
+                    {
                         markDown.AppendLine(row.ToString().Br());
+                    }
                 }
             }
 
@@ -150,7 +152,11 @@ namespace SwaggerDoc
         /// <returns></returns>
         private (string exampleJson, string schemaJson) GetRequest(OpenApiRequestBody body)
         {
-            if (body == null || body.Content.ContainsKey(ContentType) == false) return (null, null);
+            if (body == null || body.Content.ContainsKey(ContentType) == false)
+            {
+                return (null, null);
+            }
+
             string exampleJson = null, schemaJson = null;
             var schema = body.Content[ContentType].Schema;
             exampleJson += GetExample(schema).ToJson();
@@ -165,7 +171,11 @@ namespace SwaggerDoc
         /// <returns></returns>
         private (string exampleJson, string schemaJson) GetResponse(OpenApiResponses body)
         {
-            if (body == null || body["200"].Content.ContainsKey(ContentType) == false) return (null, null);
+            if (body == null || body["200"].Content.ContainsKey(ContentType) == false)
+            {
+                return (null, null);
+            }
+
             string exampleJson = null, schemaJson = null;
             var schema = body["200"].Content[ContentType].Schema;
             exampleJson += GetExample(schema).ToJson();
@@ -275,13 +285,23 @@ namespace SwaggerDoc
             object info = null;
             var key = "";
             if (apiSchema.IsObject(_schemas) || apiSchema.IsEnum(_schemas))
+            {
                 key = apiSchema.Reference.Id;
+            }
             else if (apiSchema.IsArray())
+            {
                 key = apiSchema.Items.Type ?? apiSchema.Items.Reference.Id;
+            }
             else if (apiSchema.IsBaseType())
+            {
                 key = apiSchema.Type;
+            }
+
             if (key != null)
+            {
                 info = func(key);
+            }
+
             return info;
         }
 
