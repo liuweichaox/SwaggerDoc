@@ -34,6 +34,24 @@ public class SwaggerEnumFilter : IDocumentFilter
             var list = property.Enum.Cast<OpenApiInteger>().ToList();
             property.Description += DescribeEnum(itemType, list);
         }
+
+        foreach (var itemPaths in swaggerDoc.Paths)
+        {
+            foreach (var itemOperation in itemPaths.Value.Operations)
+            {
+                foreach (var itemParameter in itemOperation.Value.Parameters)
+                {
+                    if (itemParameter?.Schema?.Reference?.Id == null ||
+                        !dict.ContainsKey(itemParameter.Schema?.Reference?.Id))
+                    {
+                        continue;
+                    }
+
+                    var itemType = swaggerDoc.Components.Schemas[itemParameter.Schema.Reference.Id];
+                    itemParameter.Description = itemType.Description;
+                }
+            }
+        }
     }
 
     private Dictionary<string, Type> GetAllEnum()

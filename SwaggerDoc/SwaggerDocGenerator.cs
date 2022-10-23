@@ -127,7 +127,7 @@ namespace SwaggerDoc
         /// </summary>
         /// <param name="apiParameters"></param>
         /// <returns></returns>
-        private static string GetParameters(IEnumerable<OpenApiParameter> apiParameters)
+        private string GetParameters(IEnumerable<OpenApiParameter> apiParameters)
         {
             string str = null;
             var isFirst = true;
@@ -393,7 +393,7 @@ namespace SwaggerDoc
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static object GetDefaultValue(string type)
+        private object GetDefaultValue(string type)
         {
             var number = new[]
             {
