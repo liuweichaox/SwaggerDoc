@@ -24,9 +24,16 @@ services.AddSwaggerDoc();//（用于MarkDown生成）
 ### 注册Swagger服务
 
 ```C#
+services.AddSwaggerDoc();
 services.AddSwaggerGen(c =>
 {
-	c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger API 示例文档", Version = "v1",Description="API文档全部由代码自动生成" });
+	c.SwaggerDoc("v1", new OpenApiInfo {Title = "Swagger API 文档", Version = "v1", Description = "API 文档"});
+	// 添加枚举过滤器，在文档中显示枚举的描述信息
+	c.DocumentFilter<SwaggerEnumFilter>(new object[]
+	{
+		// 枚举所在的程序集
+		new[] {Assembly.GetExecutingAssembly()}
+	});
 	c.IncludeXmlComments("Samples.xml");
 });
 ```
