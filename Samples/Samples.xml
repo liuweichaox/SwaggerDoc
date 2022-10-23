@@ -215,6 +215,11 @@
             商品数量
             </summary>
         </member>
+        <member name="P:Samples.Models.Order.GoodsPrice">
+            <summary>
+            商品单价
+            </summary>
+        </member>
         <member name="P:Samples.Models.Order.Amount">
             <summary>
             订单金额
@@ -235,6 +240,11 @@
             订单支付时间
             </summary>
         </member>
+        <member name="P:Samples.Models.Order.Address">
+            <summary>
+            收货地址
+            </summary>
+        </member>
         <member name="P:Samples.Models.Order.CreateTime">
             <summary>
             订单创建时间
@@ -245,9 +255,9 @@
             订单更新时间
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.Address">
+        <member name="P:Samples.Models.Order.Remark">
             <summary>
-            收货地址
+            订单备注
             </summary>
         </member>
         <member name="T:Samples.Models.OrderStatus">
@@ -320,9 +330,24 @@
             更新订单
             </summary>
         </member>
+        <member name="P:Samples.Models.UpdateOrderRequest.Id">
+            <summary>
+            订单编号
+            </summary>
+        </member>
         <member name="P:Samples.Models.UpdateOrderRequest.OrderNo">
             <summary>
             订单号
+            </summary>
+        </member>
+        <member name="P:Samples.Models.UpdateOrderRequest.GoodsNum">
+            <summary>
+            商品数量
+            </summary>
+        </member>
+        <member name="P:Samples.Models.UpdateOrderRequest.Amount">
+            <summary>
+            订单金额
             </summary>
         </member>
         <member name="P:Samples.Models.UpdateOrderRequest.OrderStatus">
@@ -330,14 +355,19 @@
             订单状态
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.OrderAmount">
+        <member name="P:Samples.Models.UpdateOrderRequest.OrderType">
             <summary>
-            订单金额
+            订单类型
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.OrderRemark">
+        <member name="P:Samples.Models.UpdateOrderRequest.Remark">
             <summary>
             订单备注
+            </summary>
+        </member>
+        <member name="P:Samples.Models.UpdateOrderRequest.Address">
+            <summary>
+            收货地址
             </summary>
         </member>
         <member name="T:Samples.Models.UpdateOrderResponse">
@@ -345,9 +375,24 @@
             更新订单返回
             </summary>
         </member>
+        <member name="P:Samples.Models.UpdateOrderResponse.Id">
+            <summary>
+            订单编号
+            </summary>
+        </member>
         <member name="P:Samples.Models.UpdateOrderResponse.OrderNo">
             <summary>
             订单号
+            </summary>
+        </member>
+        <member name="P:Samples.Models.UpdateOrderResponse.GoodsNum">
+            <summary>
+            商品数量
+            </summary>
+        </member>
+        <member name="P:Samples.Models.UpdateOrderResponse.Amount">
+            <summary>
+            订单金额
             </summary>
         </member>
         <member name="P:Samples.Models.UpdateOrderResponse.OrderStatus">
@@ -355,14 +400,19 @@
             订单状态
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.OrderStatusDesc">
+        <member name="P:Samples.Models.UpdateOrderResponse.OrderType">
             <summary>
-            订单状态描述
+            订单类型
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.OrderAmount">
+        <member name="P:Samples.Models.UpdateOrderResponse.Remark">
             <summary>
-            订单金额
+            订单备注
+            </summary>
+        </member>
+        <member name="P:Samples.Models.UpdateOrderResponse.Address">
+            <summary>
+            收货地址
             </summary>
         </member>
         <member name="T:Samples.Program">

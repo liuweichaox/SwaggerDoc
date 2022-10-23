@@ -69,46 +69,46 @@ namespace SwaggerDoc
                     var method = key.ToString();
                     var row = new StringBuilder();
                     var title = operation.Summary ?? url;
-                    var query = GetParameters(operation.Parameters);
-                    var (requestExample, requestSchema) = GetRequestBody(operation.RequestBody);
-                    var (responseExample, responseSchema) = GetResponses(operation.Responses);
+                    var parameters = GetParameters(operation.Parameters);
+                    var (requestExample, requestSchema) = GetRequest(operation.RequestBody);
+                    var (responseExample, responseSchema) = GetResponse(operation.Responses);
                     row.AppendLine(title.H(2)); //接口名称
                     row.AppendLine("基本信息".H(3).NewLine()); //基本信息
                     row.AppendLine($"{"接口地址：".B()}{url}".Li().NewLine());
                     row.AppendLine($"{"请求方式：".B()}{method}".Li().NewLine());
-                    
+
                     if (method is "Post" or "Put")
                     {
                         row.AppendLine($"{"请求类型：".B()}{ContentType}".Li().NewLine());
                     }
 
-                    if (string.IsNullOrWhiteSpace(query) == false) //Query
+                    if (string.IsNullOrWhiteSpace(parameters) == false) //Parameters
                     {
-                        row.AppendLine("Parameters".H(3));
-                        row.AppendLine(query);
+                        row.AppendLine("请求参数（Parameters）：".H(3));
+                        row.AppendLine(parameters);
                     }
 
                     if (string.IsNullOrWhiteSpace(requestSchema) == false) //RequestSchema
                     {
-                        row.AppendLine("Request Schema".H(3));
+                        row.AppendLine("请求参数（Query）：".H(3));
                         row.AppendLine(requestSchema.Code());
                     }
 
-                    if (string.IsNullOrWhiteSpace(requestExample) == false) //RequestBody
+                    if (string.IsNullOrWhiteSpace(requestExample) == false) //RequestExample
                     {
-                        row.AppendLine("RequestBody Example".H(3));
+                        row.AppendLine("请求示例：".H(3));
                         row.AppendLine(requestExample.Code());
                     }
 
                     if (string.IsNullOrWhiteSpace(responseSchema) == false) //ResponseSchema
                     {
-                        row.AppendLine("Response Schema".H(3));
+                        row.AppendLine("返回参数：".H(3));
                         row.AppendLine(responseSchema.Code());
                     }
 
                     if (string.IsNullOrWhiteSpace(responseExample) == false) //ResponseBody
                     {
-                        row.AppendLine("ResponseBody Example".H(3));
+                        row.AppendLine("返回示例：".H(3));
                         row.AppendLine(responseExample.Code());
                     }
 
@@ -139,6 +139,7 @@ namespace SwaggerDoc
                 str += isFirst ? $"{queryTitle}{queryStr}" : queryStr;
                 isFirst = false;
             }
+
             return str;
         }
 
@@ -147,13 +148,13 @@ namespace SwaggerDoc
         /// </summary>
         /// <param name="body"></param>
         /// <returns></returns>
-        private (string exampleJson, string schemaJson) GetRequestBody(OpenApiRequestBody body)
+        private (string exampleJson, string schemaJson) GetRequest(OpenApiRequestBody body)
         {
             if (body == null || body.Content.ContainsKey(ContentType) == false) return (null, null);
             string exampleJson = null, schemaJson = null;
             var schema = body.Content[ContentType].Schema;
             exampleJson += GetExample(schema).ToJson();
-            schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id)).ToJson();
+            schemaJson += AnalyzeFiled(schema, (objKey) => GetFiledDetails(objKey, ModelType.Request)).ToJson();
             return (exampleJson, schemaJson);
         }
 
@@ -162,13 +163,13 @@ namespace SwaggerDoc
         /// </summary>
         /// <param name="body"></param>
         /// <returns></returns>
-        private (string exampleJson, string schemaJson) GetResponses(OpenApiResponses body)
+        private (string exampleJson, string schemaJson) GetResponse(OpenApiResponses body)
         {
             if (body == null || body["200"].Content.ContainsKey(ContentType) == false) return (null, null);
             string exampleJson = null, schemaJson = null;
             var schema = body["200"].Content[ContentType].Schema;
             exampleJson += GetExample(schema).ToJson();
-            schemaJson += GetModelInfo(schema, (id) => GetModelInfo(id, false)).ToJson();
+            schemaJson += AnalyzeFiled(schema, (objKey) => GetFiledDetails(objKey, ModelType.Response)).ToJson();
             return (exampleJson, schemaJson);
         }
 
@@ -264,12 +265,12 @@ namespace SwaggerDoc
         }
 
         /// <summary>
-        /// 获取 Body 参数说明
+        /// 分析参数,获取参数说明
         /// </summary>
         /// <param name="apiSchema"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        private object GetModelInfo(OpenApiSchema apiSchema, Func<string, object> func)
+        private object AnalyzeFiled(OpenApiSchema apiSchema, Func<string, object> func)
         {
             object info = null;
             var key = "";
@@ -288,14 +289,19 @@ namespace SwaggerDoc
         /// 递归获取 Body 参数说明
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="isShowRequired"></param>
+        /// <param name="modelType"></param>
         /// <returns></returns>
-        private object GetModelInfo(string key, bool isShowRequired = true)
+        private object GetFiledDetails(string key, ModelType modelType)
         {
             if (key == null) return null;
-            if (_schemas.ContainsKey(key) == false) return key;
+            if (_schemas.ContainsKey(key) == false)
+            {
+                return key;
+            }
+
             var schema = _schemas.SingleOrDefault(x => x.Key == key).Value;
             if (schema.Properties.Any() == false)
+            {
                 return new EnumInfo()
                 {
                     枚举范围 = GetEnumValues(key),
@@ -303,6 +309,8 @@ namespace SwaggerDoc
                     枚举类型 = schema.Format,
                     枚举名称 = key
                 };
+            }
+
             var properties = new Dictionary<string, object>();
             foreach (var (s, value) in schema.Properties)
             {
@@ -310,12 +318,12 @@ namespace SwaggerDoc
                 if (value.IsObject(_schemas))
                 {
                     var objKey = value.Reference.Id;
-                    obj = objKey == key ? objKey : GetModelInfo(objKey, isShowRequired);
+                    obj = objKey == key ? objKey : GetFiledDetails(objKey, modelType);
                 }
                 else if (value.IsArray())
                 {
                     var arrayKey = value.IsBaseTypeArray() ? value.Items.Type : value.Items.Reference.Id;
-                    obj = new[] {GetModelInfo(arrayKey, isShowRequired)};
+                    obj = new[] {GetFiledDetails(arrayKey, modelType)};
                 }
                 else if (value.IsEnum(_schemas))
                 {
@@ -334,7 +342,7 @@ namespace SwaggerDoc
                     obj = value.Format ?? value.Type;
                 }
 
-                if (isShowRequired)
+                if (modelType == ModelType.Request)
                 {
                     var requestModelInfo = new RequestModelInfo
                     {

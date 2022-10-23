@@ -31,6 +31,11 @@ public class Order
     /// 商品数量
     /// </summary>
     public int GoodsNum { get; set; }
+    
+    /// <summary>
+    /// 商品单价
+    /// </summary>
+    public int GoodsPrice { get; set; }
 
     /// <summary>
     /// 订单金额
@@ -53,6 +58,11 @@ public class Order
     public DateTime PayTime { get; set; }
     
     /// <summary>
+    /// 收货地址
+    /// </summary>
+    public Address Address { get; set; }
+    
+    /// <summary>
     /// 订单创建时间
     /// </summary>
     public DateTime CreateTime { get; set; }
@@ -63,7 +73,7 @@ public class Order
     public DateTime UpdateTime { get; set; }
     
     /// <summary>
-    /// 收货地址
+    /// 订单备注
     /// </summary>
-    public Address Address { get; set; }
+    public string Remark { get; set; }
 }
