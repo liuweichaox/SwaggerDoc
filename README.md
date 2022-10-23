@@ -1,6 +1,6 @@
 # 简介
 
-SwaggerDoc 是基于 Swashbuckle.AspNetCore 类库的离线文档生工具。
+SwaggerDoc 是基于 Swashbuckle.AspNetCore 类库的离线文档生工具。文档以 JSON 结构描述参数说明，支持枚举类型描述。工具导出 Markdown 格式文件，可以根据自己需求再将 Markdown 文件转换为自己所需要的文件格式。
 
 ##  1、SwaggerDoc引用 
 

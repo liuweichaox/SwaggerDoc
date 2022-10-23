@@ -17,8 +17,8 @@ namespace Samples.Controllers
         /// <param name="id">订单号</param>
         /// <param name="request">请求参数</param>
         /// <returns></returns>
-        [HttpGet]
-        public GetOrderListResponse GetOrderDetails(int id, GetOrderListRequest request)
+        [HttpGet("{id}")]
+        public GetOrderListResponse GetOrderDetails(int id, [FromQuery]GetOrderListRequest request)
         {
             return new GetOrderListResponse();
         }

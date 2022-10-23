@@ -84,13 +84,13 @@ namespace SwaggerDoc
 
                     if (string.IsNullOrWhiteSpace(parameters) == false) //Parameters
                     {
-                        row.AppendLine("请求参数（Parameters）：".H(3));
+                        row.AppendLine("请求参数(Parameters)：".H(3));
                         row.AppendLine(parameters);
                     }
 
                     if (string.IsNullOrWhiteSpace(requestSchema) == false) //RequestSchema
                     {
-                        row.AppendLine("请求参数（Query）：".H(3));
+                        row.AppendLine("请求参数(Body)：".H(3));
                         row.AppendLine(requestSchema.Code());
                     }
 
