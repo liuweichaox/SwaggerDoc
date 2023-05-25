@@ -43,7 +43,9 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Samples v1"
 ```
 ## 3、生成MarkDown
 
-访问 https://{localhost}/doc
+Get 访问 https://{localhost}:{port}/doc
+
+参数：swaggerVersion swagger 文档版本（AddSwaggerGen 中的 Version 参数，默认 v1）
 
 ## 4、生成示例
 
