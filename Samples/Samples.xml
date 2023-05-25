@@ -39,16 +39,6 @@
             <param name="id">订单号</param>
             <returns></returns>
         </member>
-        <member name="T:Samples.Controllers.SwaggerController">
-            <summary>
-            Swagger 控制器
-            </summary>
-        </member>
-        <member name="M:Samples.Controllers.SwaggerController.Doc(SwaggerDoc.ISwaggerDocGenerator,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-            API文档导出
-            </summary>
-        </member>
         <member name="T:Samples.Models.Address">
             <summary>
             地址

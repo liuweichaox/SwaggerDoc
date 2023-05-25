@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 namespace SwaggerDoc
@@ -13,13 +9,13 @@ namespace SwaggerDoc
     public interface ISwaggerDocGenerator
     {
         /// <summary>
-        /// 获取Swagger流文件
+        /// 获取 Swagger 流文件
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name"></param>E
         /// <returns></returns>
         Task<MemoryStream> GetSwaggerDocStreamAsync(string name);
         /// <summary>
-        /// 获取Swagger MarkDown源代码
+        /// 获取 Swagger MarkDown 源代码
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
