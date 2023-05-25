@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SwaggerDoc\SwaggerDoc.csproj" />
+    <PackageReference Include="SwaggerDoc" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

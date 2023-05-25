@@ -8,25 +8,20 @@ SwaggerDoc 是基于 Swashbuckle.AspNetCore 类库的离线文档生工具。文
 
 ### 主要接口
 
-```C#
-public interface ISwaggerDocGenerator
-{
-    Task<MemoryStream> GetSwaggerDocStreamAsync(string name);
-    string GetSwaggerDoc(string name);
-}
+```
+dotnet add package SwaggerDoc --version 1.0.1
 ```
 ## 2、Startup配置
 
-### 注册SwaggerDoc服务
+### 注册 SwaggerDoc 服务
 
 ```C#
 services.AddSwaggerDoc();//（用于MarkDown生成）
 ```
 
-### 注册Swagger服务
+### 注册 Swagger 服务
 
-```C#
-services.AddSwaggerDoc();
+```
 services.AddSwaggerGen(c =>
 {
 	c.SwaggerDoc("v1", new OpenApiInfo {Title = "Swagger API 文档", Version = "v1", Description = "API 文档"});
@@ -40,7 +35,7 @@ services.AddSwaggerGen(c =>
 });
 ```
 
-### 引用Swagger中间件
+### 引用 Swagger中间件
 
 ```C#
 app.UseSwagger();
@@ -48,27 +43,8 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Samples v1"
 ```
 ## 3、生成MarkDown
 
-```C#
-/// <summary>
-/// SwaggerController
-/// </summary>
-[Route("api/[controller]/[action]")]
-[ApiController]
-public class SwaggerController : ControllerBase
-{
-    /// <summary>
-    /// API文档导出
-    /// </summary>
-    [HttpGet]
-    public async Task<IActionResult> SwaggerDoc([FromServices] ISwaggerDocGenerator swaggerDocGenerator, [FromServices] IWebHostEnvironment environment)
-    {
-        var stream = await swaggerDocGenerator.GetSwaggerDocStreamAsync("v1");
-        var mime = "application/octet-stream";
-        var name = "SwaggerDoc.md";
-        return File(stream.ToArray(), mime,name);
-    }
-}
-```
+访问 https://{localhost}/doc
+
 ## 4、生成示例
 
 这里用的是 [typora](https://www.typora.io/) 编辑器，下载 [pandoc](https://github.com/jgm/pandoc/releases) 插件可以实现Marddown格式转换为PDF功能（免费）
