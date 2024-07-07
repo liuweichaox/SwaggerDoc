@@ -16,10 +16,11 @@ namespace SwaggerDoc
         /// <summary>
         /// API文档导出
         /// </summary>
-        /// <param name="docName"></param>
+        /// <param name="swaggerDocGenerator"></param>
+        /// <param name="swaggerVersion"></param>
         /// <returns></returns>
         [HttpGet("/doc")]
-        public async Task<IActionResult> Doc([FromServices] ISwaggerDocGenerator swaggerDocGenerator, [FromServices] IWebHostEnvironment environment, string swaggerVersion = "v1")
+        public async Task<IActionResult> Doc([FromServices] ISwaggerDocGenerator swaggerDocGenerator, string swaggerVersion = "v1")
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -27,7 +28,7 @@ namespace SwaggerDoc
             stopwatch.Stop();
             var log = "Swagger文档导出成功，耗时" + stopwatch.ElapsedMilliseconds + "ms";
             Debug.WriteLine(log);
-            var mime = "application/octet-stream";
+            const string mime = "application/octet-stream";
             const string name = "SwaggerDoc.md";
             return File(stream.ToArray(), mime, name);
         }
