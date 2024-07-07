@@ -1,6 +1,6 @@
 using System;
 
-namespace Samples.Models;
+namespace Sample.Models;
 
 /// <summary>
 /// 订单

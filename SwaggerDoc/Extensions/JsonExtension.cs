@@ -16,11 +16,11 @@ namespace SwaggerDoc.Extensions
         public static string ToJson(this object obj)
         {
            var options = new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            };
-          return JsonSerializer.Serialize(obj, options);
+           {
+               Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+               WriteIndented = true
+           };
+           return JsonSerializer.Serialize(obj, options);
         }
     }
 }

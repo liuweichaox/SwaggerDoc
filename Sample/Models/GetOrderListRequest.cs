@@ -1,14 +1,19 @@
-namespace Samples.Models;
+namespace Sample.Models;
 
 /// <summary>
-/// 删除订单返回
+/// 查询订单详情参数
 /// </summary>
-public class DeleteOrderResponse
+public class GetOrderListRequest
 {
     /// <summary>
     /// 订单号
     /// </summary>
     public string OrderNo { get; set; }
+    
+    /// <summary>
+    /// 订单类型
+    /// </summary>
+    public OrderType OrderType { get; set; }
     
     /// <summary>
     /// 订单状态

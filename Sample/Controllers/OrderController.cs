@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Samples.Models;
+using Sample.Models;
 
-namespace Samples.Controllers
+namespace Sample.Controllers
 {
     /// <summary>
     /// 示例控制器

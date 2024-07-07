@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Samples.Models;
+namespace Sample.Models;
 
 /// <summary>
 /// 订单状态

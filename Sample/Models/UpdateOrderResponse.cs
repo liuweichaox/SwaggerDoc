@@ -1,11 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+using System;
 
-namespace Samples.Models;
+namespace Sample.Models;
 
 /// <summary>
-/// 更新订单
+/// 更新订单返回
 /// </summary>
-public class UpdateOrderRequest
+public class UpdateOrderResponse
 {
     /// <summary>
     /// 订单编号
@@ -15,7 +15,6 @@ public class UpdateOrderRequest
     /// <summary>
     /// 订单号
     /// </summary>
-    [Required]
     public string OrderNo { get; set; }
     
     /// <summary>

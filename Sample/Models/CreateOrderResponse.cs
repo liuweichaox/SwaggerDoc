@@ -1,4 +1,4 @@
-namespace Samples.Models;
+namespace Sample.Models;
 
 /// <summary>
 /// 创建订单返回

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Samples.Models;
+namespace Sample.Models;
 
 /// <summary>
 /// 订单列表返回

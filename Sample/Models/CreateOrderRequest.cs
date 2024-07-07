@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Samples.Models;
+namespace Sample.Models;
 
 /// <summary>
 /// 创建订单参数

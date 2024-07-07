@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Samples</name>
+        <name>Sample</name>
     </assembly>
     <members>
-        <member name="T:Samples.Controllers.OrderController">
+        <member name="T:Sample.Controllers.OrderController">
             <summary>
             示例控制器
             </summary>
         </member>
-        <member name="M:Samples.Controllers.OrderController.GetOrderDetails(System.Int32,Samples.Models.GetOrderListRequest)">
+        <member name="M:Sample.Controllers.OrderController.GetOrderDetails(System.Int32,Sample.Models.GetOrderListRequest)">
             <summary>
             获取订单列表
             </summary>
@@ -17,14 +17,14 @@
             <param name="request">请求参数</param>
             <returns></returns>
         </member>
-        <member name="M:Samples.Controllers.OrderController.CreateOrder(Samples.Models.CreateOrderRequest)">
+        <member name="M:Sample.Controllers.OrderController.CreateOrder(Sample.Models.CreateOrderRequest)">
             <summary>
             创建订单
             </summary>
             <param name="request">创建内容</param>
             <returns></returns>
         </member>
-        <member name="M:Samples.Controllers.OrderController.UpdateOrder(System.Int32,Samples.Models.UpdateOrderRequest)">
+        <member name="M:Sample.Controllers.OrderController.UpdateOrder(System.Int32,Sample.Models.UpdateOrderRequest)">
             <summary>
             修改订单
             </summary>
@@ -32,425 +32,378 @@
             <param name="request">修改内容</param>
             <returns></returns>
         </member>
-        <member name="M:Samples.Controllers.OrderController.DeleteOrder(System.Int32)">
+        <member name="M:Sample.Controllers.OrderController.DeleteOrder(System.Int32)">
             <summary>
             删除订单
             </summary>
             <param name="id">订单号</param>
             <returns></returns>
         </member>
-        <member name="T:Samples.Models.Address">
+        <member name="T:Sample.Models.Address">
             <summary>
             地址
             </summary>
         </member>
-        <member name="P:Samples.Models.Address.Country">
+        <member name="P:Sample.Models.Address.Country">
             <summary>
             国家
             </summary>
         </member>
-        <member name="P:Samples.Models.Address.City">
+        <member name="P:Sample.Models.Address.City">
             <summary>
             城市
             </summary>
         </member>
-        <member name="P:Samples.Models.Address.Street">
+        <member name="P:Sample.Models.Address.Street">
             <summary>
             街道
             </summary>
         </member>
-        <member name="P:Samples.Models.Address.ZipCode">
+        <member name="P:Sample.Models.Address.ZipCode">
             <summary>
             邮编
             </summary>
         </member>
-        <member name="T:Samples.Models.CreateOrderRequest">
+        <member name="T:Sample.Models.CreateOrderRequest">
             <summary>
             创建订单参数
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderRequest.GoodsId">
+        <member name="P:Sample.Models.CreateOrderRequest.GoodsId">
             <summary>
             商品ID
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderRequest.GoodsName">
+        <member name="P:Sample.Models.CreateOrderRequest.GoodsName">
             <summary>
             商品名称
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderRequest.GoodsNum">
+        <member name="P:Sample.Models.CreateOrderRequest.GoodsNum">
             <summary>
             商品数量
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderRequest.OrderType">
+        <member name="P:Sample.Models.CreateOrderRequest.OrderType">
             <summary>
             订单类型
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderRequest.Address">
+        <member name="P:Sample.Models.CreateOrderRequest.Address">
             <summary>
             收货地址
             </summary>
         </member>
-        <member name="T:Samples.Models.CreateOrderResponse">
+        <member name="T:Sample.Models.CreateOrderResponse">
             <summary>
             创建订单返回
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderResponse.OrderNo">
+        <member name="P:Sample.Models.CreateOrderResponse.OrderNo">
             <summary>
             订单号
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderResponse.PayUrl">
+        <member name="P:Sample.Models.CreateOrderResponse.PayUrl">
             <summary>
             支付链接
             </summary>
         </member>
-        <member name="P:Samples.Models.CreateOrderResponse.PayQrCode">
+        <member name="P:Sample.Models.CreateOrderResponse.PayQrCode">
             <summary>
             支付二维码
             </summary>
         </member>
-        <member name="T:Samples.Models.DeleteOrderResponse">
+        <member name="T:Sample.Models.DeleteOrderResponse">
             <summary>
             删除订单返回
             </summary>
         </member>
-        <member name="P:Samples.Models.DeleteOrderResponse.OrderNo">
+        <member name="P:Sample.Models.DeleteOrderResponse.OrderNo">
             <summary>
             订单号
             </summary>
         </member>
-        <member name="P:Samples.Models.DeleteOrderResponse.OrderStatus">
+        <member name="P:Sample.Models.DeleteOrderResponse.OrderStatus">
             <summary>
             订单状态
             </summary>
         </member>
-        <member name="T:Samples.Models.GetOrderListRequest">
+        <member name="T:Sample.Models.GetOrderListRequest">
             <summary>
             查询订单详情参数
             </summary>
         </member>
-        <member name="P:Samples.Models.GetOrderListRequest.OrderNo">
+        <member name="P:Sample.Models.GetOrderListRequest.OrderNo">
             <summary>
             订单号
             </summary>
         </member>
-        <member name="P:Samples.Models.GetOrderListRequest.OrderType">
+        <member name="P:Sample.Models.GetOrderListRequest.OrderType">
             <summary>
             订单类型
             </summary>
         </member>
-        <member name="P:Samples.Models.GetOrderListRequest.OrderStatus">
+        <member name="P:Sample.Models.GetOrderListRequest.OrderStatus">
             <summary>
             订单状态
             </summary>
         </member>
-        <member name="T:Samples.Models.GetOrderListResponse">
+        <member name="T:Sample.Models.GetOrderListResponse">
             <summary>
             订单列表返回
             </summary>
         </member>
-        <member name="P:Samples.Models.GetOrderListResponse.OrderList">
+        <member name="P:Sample.Models.GetOrderListResponse.OrderList">
             <summary>
             订单列表
             </summary>
         </member>
-        <member name="P:Samples.Models.GetOrderListResponse.TotalCount">
+        <member name="P:Sample.Models.GetOrderListResponse.TotalCount">
             <summary>
             总数
             </summary>
         </member>
-        <member name="P:Samples.Models.GetOrderListResponse.TotalPage">
+        <member name="P:Sample.Models.GetOrderListResponse.TotalPage">
             <summary>
             总页数
             </summary>
             <remarks>总页数 = 总数 / 每页数量</remarks>
         </member>
-        <member name="P:Samples.Models.GetOrderListResponse.CurrentPage">
+        <member name="P:Sample.Models.GetOrderListResponse.CurrentPage">
             <summary>
             当前页
             </summary>
         </member>
-        <member name="T:Samples.Models.Order">
+        <member name="T:Sample.Models.Order">
             <summary>
             订单
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.Id">
+        <member name="P:Sample.Models.Order.Id">
             <summary>
             订单编号
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.OrderNo">
+        <member name="P:Sample.Models.Order.OrderNo">
             <summary>
             订单号
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.GoodsId">
+        <member name="P:Sample.Models.Order.GoodsId">
             <summary>
             商品ID
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.GoodsName">
+        <member name="P:Sample.Models.Order.GoodsName">
             <summary>
             商品名称
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.GoodsNum">
+        <member name="P:Sample.Models.Order.GoodsNum">
             <summary>
             商品数量
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.GoodsPrice">
+        <member name="P:Sample.Models.Order.GoodsPrice">
             <summary>
             商品单价
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.Amount">
+        <member name="P:Sample.Models.Order.Amount">
             <summary>
             订单金额
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.OrderStatus">
+        <member name="P:Sample.Models.Order.OrderStatus">
             <summary>
             订单状态
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.OrderType">
+        <member name="P:Sample.Models.Order.OrderType">
             <summary>
             订单类型
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.PayTime">
+        <member name="P:Sample.Models.Order.PayTime">
             <summary>
             订单支付时间
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.Address">
+        <member name="P:Sample.Models.Order.Address">
             <summary>
             收货地址
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.CreateTime">
+        <member name="P:Sample.Models.Order.CreateTime">
             <summary>
             订单创建时间
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.UpdateTime">
+        <member name="P:Sample.Models.Order.UpdateTime">
             <summary>
             订单更新时间
             </summary>
         </member>
-        <member name="P:Samples.Models.Order.Remark">
+        <member name="P:Sample.Models.Order.Remark">
             <summary>
             订单备注
             </summary>
         </member>
-        <member name="T:Samples.Models.OrderStatus">
+        <member name="T:Sample.Models.OrderStatus">
             <summary>
             订单状态
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderStatus.Unpaid">
+        <member name="F:Sample.Models.OrderStatus.Unpaid">
             <summary>
             未支付
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderStatus.Paid">
+        <member name="F:Sample.Models.OrderStatus.Paid">
             <summary>
             已支付
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderStatus.Shipped">
+        <member name="F:Sample.Models.OrderStatus.Shipped">
             <summary>
             已发货
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderStatus.Completed">
+        <member name="F:Sample.Models.OrderStatus.Completed">
             <summary>
             已完成
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderStatus.Canceled">
+        <member name="F:Sample.Models.OrderStatus.Canceled">
             <summary>
             已取消
             </summary>
         </member>
-        <member name="T:Samples.Models.OrderType">
+        <member name="T:Sample.Models.OrderType">
             <summary>
             订单类型
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderType.Unknown">
+        <member name="F:Sample.Models.OrderType.Unknown">
             <summary>
             未知
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderType.Normal">
+        <member name="F:Sample.Models.OrderType.Normal">
             <summary>
             一般订单
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderType.Promotion">
+        <member name="F:Sample.Models.OrderType.Promotion">
             <summary>
             促销订单
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderType.Return">
+        <member name="F:Sample.Models.OrderType.Return">
             <summary>
             退货订单
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderType.Exchange">
+        <member name="F:Sample.Models.OrderType.Exchange">
             <summary>
             换货订单
             </summary>
         </member>
-        <member name="F:Samples.Models.OrderType.Refund">
+        <member name="F:Sample.Models.OrderType.Refund">
             <summary>
             退款订单
             </summary>
         </member>
-        <member name="T:Samples.Models.UpdateOrderRequest">
+        <member name="T:Sample.Models.UpdateOrderRequest">
             <summary>
             更新订单
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.Id">
+        <member name="P:Sample.Models.UpdateOrderRequest.Id">
             <summary>
             订单编号
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.OrderNo">
+        <member name="P:Sample.Models.UpdateOrderRequest.OrderNo">
             <summary>
             订单号
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.GoodsNum">
+        <member name="P:Sample.Models.UpdateOrderRequest.GoodsNum">
             <summary>
             商品数量
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.Amount">
+        <member name="P:Sample.Models.UpdateOrderRequest.Amount">
             <summary>
             订单金额
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.OrderStatus">
+        <member name="P:Sample.Models.UpdateOrderRequest.OrderStatus">
             <summary>
             订单状态
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.OrderType">
+        <member name="P:Sample.Models.UpdateOrderRequest.OrderType">
             <summary>
             订单类型
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.Remark">
+        <member name="P:Sample.Models.UpdateOrderRequest.Remark">
             <summary>
             订单备注
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderRequest.Address">
+        <member name="P:Sample.Models.UpdateOrderRequest.Address">
             <summary>
             收货地址
             </summary>
         </member>
-        <member name="T:Samples.Models.UpdateOrderResponse">
+        <member name="T:Sample.Models.UpdateOrderResponse">
             <summary>
             更新订单返回
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.Id">
+        <member name="P:Sample.Models.UpdateOrderResponse.Id">
             <summary>
             订单编号
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.OrderNo">
+        <member name="P:Sample.Models.UpdateOrderResponse.OrderNo">
             <summary>
             订单号
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.GoodsNum">
+        <member name="P:Sample.Models.UpdateOrderResponse.GoodsNum">
             <summary>
             商品数量
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.Amount">
+        <member name="P:Sample.Models.UpdateOrderResponse.Amount">
             <summary>
             订单金额
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.OrderStatus">
+        <member name="P:Sample.Models.UpdateOrderResponse.OrderStatus">
             <summary>
             订单状态
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.OrderType">
+        <member name="P:Sample.Models.UpdateOrderResponse.OrderType">
             <summary>
             订单类型
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.Remark">
+        <member name="P:Sample.Models.UpdateOrderResponse.Remark">
             <summary>
             订单备注
             </summary>
         </member>
-        <member name="P:Samples.Models.UpdateOrderResponse.Address">
+        <member name="P:Sample.Models.UpdateOrderResponse.Address">
             <summary>
             收货地址
             </summary>
-        </member>
-        <member name="T:Samples.Program">
-            <summary>
-            主程序
-            </summary>
-        </member>
-        <member name="M:Samples.Program.Main(System.String[])">
-            <summary>
-            主程序入口
-            </summary>
-            <param name="args"></param>
-        </member>
-        <member name="M:Samples.Program.CreateHostBuilder(System.String[])">
-            <summary>
-            创建主机
-            </summary>
-            <param name="args"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Samples.Startup">
-            <summary>
-            启动类
-            </summary>
-        </member>
-        <member name="M:Samples.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            启动类
-            </summary>
-            <param name="configuration"></param>
-        </member>
-        <member name="P:Samples.Startup.Configuration">
-            <summary>
-            配置
-            </summary>
-        </member>
-        <member name="M:Samples.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            配置服务
-            </summary>
-            <param name="services"></param>
-        </member>
-        <member name="M:Samples.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-            配置中间件
-            </summary>
-            <param name="app"></param>
-            <param name="env"></param>
         </member>
     </members>
 </doc>
