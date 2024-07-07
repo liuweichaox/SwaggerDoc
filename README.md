@@ -21,7 +21,9 @@ services.AddSwaggerDoc();//（用于MarkDown生成）
 
 ### 注册 Swagger 服务
 
-```
+笔记：项目属性配置允许 **XML** 生成
+
+```C#
 services.AddSwaggerGen(c =>
 {
 	c.SwaggerDoc("v1", new OpenApiInfo {Title = "Swagger API 文档", Version = "v1", Description = "API 文档"});
@@ -41,6 +43,7 @@ services.AddSwaggerGen(c =>
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Samples v1"));
 ```
+
 ## 3、生成MarkDown
 
 Get 访问 https://{localhost}:{port}/doc?swaggerVersion={swaggerVersion}

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwaggerDoc", "SwaggerDoc\SwaggerDoc.csproj", "{C7D28EA5-16C0-46C4-A30A-0D1C76A46D3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{CCC416D0-05B5-4D40-B4EC-2CAD9A70A9C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Sample\Samples.csproj", "{CCC416D0-05B5-4D40-B4EC-2CAD9A70A9C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

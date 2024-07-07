@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Sample</name>
+        <name>Samples</name>
     </assembly>
     <members>
         <member name="T:Sample.Controllers.OrderController">

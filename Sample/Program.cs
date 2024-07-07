@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen(c =>
         // 枚举所在的程序集
         new[] {Assembly.GetExecutingAssembly()}
     });
-    c.IncludeXmlComments("Sample.xml");
+    c.IncludeXmlComments("Samples.xml");
 });
 builder.Services.AddSwaggerDoc();
 
@@ -31,7 +31,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseAuthorization();
 
 app.MapControllers();
